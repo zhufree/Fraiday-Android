@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">DuangJike</string>
+    <string name="anim_fall">Duang!</string>
 </resources>
