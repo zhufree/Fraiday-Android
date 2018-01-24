@@ -1,16 +1,10 @@
 package info.free.duangjike
 
 import android.animation.ObjectAnimator
-import android.animation.ValueAnimator
 import android.content.Context
 import android.graphics.*
-import android.text.Layout
 import android.util.AttributeSet
-import android.util.Log
-import android.view.View
 import android.view.animation.BounceInterpolator
-import android.view.animation.LinearInterpolator
-import android.widget.LinearLayout
 
 /**
  * Created by zhufree on 2018/1/23.
@@ -18,21 +12,12 @@ import android.widget.LinearLayout
  */
 
 class FallDownView : JikeView {
-    /*
-    * ic_launcher_round 即刻圆图标
-    * ic_discovertab_entrance_category 搜索图
-    * ic_discovertab_entrance_custom_topic 机器人
-    * ic_discovertab_entrance_daily 键盘？
-    * ic_discovertab_entrance_rankinglist 奖杯*/
-    private var paint = Paint(Paint.ANTI_ALIAS_FLAG)
+
     private var background: Bitmap? = null
     private var jikeDot: Bitmap? = null
-    private var camera = Camera()
 
-    private var boxWidth = 0f
-    private var boxHeight = 0f
+
     private var flodY = 0f
-    private var centerX = 0f
     private var dotLeft = 0f
     private var dotTop = 0f
         set(value) {
@@ -62,13 +47,10 @@ class FallDownView : JikeView {
 
 
 
-    override fun dispatchDraw(canvas: Canvas?) {
-        super.dispatchDraw(canvas)
-        boxWidth = width.toFloat()
-        boxHeight = height.toFloat()
+    override fun onDraw(canvas: Canvas?) {
+        super.onDraw(canvas)
 //        Log.i(mTAG, "height" + boxHeight + ", width"  +boxWidth)
         flodY = boxHeight*0.6f
-        centerX = boxWidth*0.5f
         dotLeft = width.div(2) - jikeDot?.width!!.div(2f)
 //        开始瞎jier画了
 //        背景上半部分，占父布局0.8
@@ -81,9 +63,9 @@ class FallDownView : JikeView {
         canvas?.save()
         camera.save()
         camera.rotateX(60.toFloat())
-        canvas?.translate(centerX, flodY)
+        canvas?.translate(boxCenterX, flodY)
         camera.applyToCanvas(canvas)
-        canvas?.translate((-centerX), (-flodY))
+        canvas?.translate((-boxCenterX), (-flodY))
         camera.restore()
         canvas?.clipRect(0f, flodY, boxWidth, boxHeight)
         canvas?.scale(2.1f, 1.4f)  // 先拉伸一下不然不够大

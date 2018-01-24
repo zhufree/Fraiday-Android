@@ -30,6 +30,7 @@ class MainActivity : AppCompatActivity() {
 
     init {
         fragments.add(PageFragment.newInstance(/*R.string.anim_fall,*/ R.layout.fragment_fall_down))
+        fragments.add(PageFragment.newInstance(/*R.string.anim_fall,*/ R.layout.fragment_flip_dot))
     }
 
     @OnClick(R.id.play_btn)
