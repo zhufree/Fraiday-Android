@@ -14,7 +14,6 @@ import android.view.animation.BounceInterpolator
 class FallDownView : JikeView {
 
     private var background: Bitmap? = null
-    private var jikeDot: Bitmap? = null
 
 
     private var flodY = 0f
@@ -31,7 +30,6 @@ class FallDownView : JikeView {
     constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : super(context, attrs, defStyleAttr)
 
     init {
-        jikeDot = BitmapFactory.decodeResource(resources, R.mipmap.ic_launcher_round)
         background = BitmapFactory.decodeResource(resources, R.drawable.black_sky)
         animator = ObjectAnimator.ofFloat(this, "dotTop", 0f, 900f)
         animator?.duration =2500

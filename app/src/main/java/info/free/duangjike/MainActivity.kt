@@ -17,8 +17,6 @@ class MainActivity : AppCompatActivity() {
     lateinit var viewPager: ViewPager
     @BindView(R.id.toolbar)
     lateinit var toolbar: Toolbar
-    @BindView(R.id.play_btn)
-    lateinit var playBtn: ImageButton
     @BindView(R.id.save_btn)
     lateinit var saveBtn: ImageButton
 
@@ -29,6 +27,7 @@ class MainActivity : AppCompatActivity() {
         fragments.add(PageFragment.newInstance(/*R.string.anim_fall,*/ R.layout.fragment_fall_down))
         fragments.add(PageFragment.newInstance(/*R.string.anim_fall,*/ R.layout.fragment_flip_dot))
         fragments.add(PageFragment.newInstance(/*R.string.anim_fall,*/ R.layout.fragment_flipboard_like))
+        fragments.add(PageFragment.newInstance(/*R.string.anim_fall,*/ R.layout.fragment_like_around))
     }
 
     @OnClick(R.id.play_btn)
@@ -41,8 +40,8 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         ButterKnife.bind(this)
 
-        setSupportActionBar(toolbar)
         toolbar.setTitle(R.string.anim_fall)
+        setSupportActionBar(toolbar)
 
         adapter = AnimationAdapter(supportFragmentManager, fragments)
         viewPager.adapter = adapter

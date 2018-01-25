@@ -2,8 +2,6 @@ package info.free.duangjike
 
 import android.animation.*
 import android.content.Context
-import android.graphics.Bitmap
-import android.graphics.BitmapFactory
 import android.graphics.Canvas
 import android.os.Handler
 import android.util.AttributeSet
@@ -13,7 +11,6 @@ import android.util.AttributeSet
  * 仿flipBoard翻页效果
  */
 class FlipBoardView : JikeView {
-    private var jikeLogo: Bitmap? = null
     private var dotLeft = 0f
     private var dotTop = 0f
     var flopDegree1 = 0f
@@ -35,12 +32,13 @@ class FlipBoardView : JikeView {
     private var animator2: ObjectAnimator? = null
     private var animator3: ObjectAnimator? = null
 
+    private var mHandler = Handler()
+
     constructor(context: Context) : super(context)
     constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)
     constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : super(context, attrs, defStyleAttr)
 
     init {
-        jikeLogo = BitmapFactory.decodeResource(resources, R.mipmap.ic_launcher)
 //        第一段，右侧向上叠起
 //        第二段，保持该角度旋转270
 //        第三段，上侧向上叠起，下侧保持之前的状态，两边都叠起
@@ -65,7 +63,7 @@ class FlipBoardView : JikeView {
                         invalidate()
                     }
                 }
-                handler.postDelayed(runnable, 1000)
+                mHandler.postDelayed(runnable, 1000)
             }
 
             override fun onAnimationCancel(animation: Animator?) {
@@ -90,14 +88,17 @@ class FlipBoardView : JikeView {
         // 固定的半边
         canvas?.save()
         camera.save()
+//        随着另一半的旋转，固定的半边也是旋转的，不过不是画布旋转，而是摄像头旋转
         camera.rotateZ(rotateDegree)
+//        这个Y轴旋转只在最后这半边也翻折的时候起作用
         camera.rotateY(flopDegree2)
         canvas?.translate(boxCenterX, boxCenterY)
         camera.applyToCanvas(canvas)
         canvas?.translate(-boxCenterX, -boxCenterY)
         camera.restore()
+//        裁剪左半边
         canvas?.clipRect(0f, 0f, boxCenterX, boxHeight)
-//        canvas?.clipRect(0f, 0f, boxWidth, boxHeight)
+//        画布本身不能旋转，这个操作相当于抵消camera的旋转
         canvas?.rotate(rotateDegree, boxCenterX, boxCenterY)
         canvas?.drawBitmap(jikeLogo, dotLeft, dotTop, paint)
         canvas?.restore()

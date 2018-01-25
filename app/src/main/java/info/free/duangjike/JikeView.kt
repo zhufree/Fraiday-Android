@@ -3,9 +3,7 @@ package info.free.duangjike
 import android.animation.AnimatorSet
 import android.animation.ObjectAnimator
 import android.content.Context
-import android.graphics.Camera
-import android.graphics.Canvas
-import android.graphics.Paint
+import android.graphics.*
 import android.util.AttributeSet
 import android.widget.RelativeLayout
 
@@ -21,7 +19,14 @@ open class JikeView : RelativeLayout {
     * ic_discovertab_entrance_custom_topic 机器人
     * ic_discovertab_entrance_daily 键盘？
     * ic_discovertab_entrance_rankinglist 奖杯
+    * ic_messages_like_unselected 未点赞状态的手（灰
+    * ic_messages_like_selected 点赞的手
+    * ic_messages_like_selected_shining 点赞的闪光
+    * ic_messages_collect_unselected 未收藏的星星（灰
+    * ic_messages_collect_selected 收藏的星星
     * */
+    var jikeLogo: Bitmap? = null
+    var jikeDot: Bitmap? = null
     var animator: ObjectAnimator? = null
     var animatorSet = AnimatorSet()
     var paint = Paint(Paint.ANTI_ALIAS_FLAG)
@@ -32,13 +37,16 @@ open class JikeView : RelativeLayout {
     var boxCenterX = 0f
     var boxCenterY = 0f
 
-
-    open var mTAG = "JikeView"
-
+    var mTAG = "JikeView"
 
     constructor(context: Context) : super(context)
     constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)
     constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : super(context, attrs, defStyleAttr)
+
+    init {
+        jikeLogo = BitmapFactory.decodeResource(resources, R.mipmap.ic_launcher)
+        jikeDot = BitmapFactory.decodeResource(resources, R.mipmap.ic_launcher_round)
+    }
 
     open fun startAnimation() {
         animator?.start()
