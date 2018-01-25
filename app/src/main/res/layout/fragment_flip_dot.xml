@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <info.free.duangjike.FlipJikeView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/fall_down_view"
+    android:id="@+id/anim_view"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorBackground">

@@ -1,13 +1,12 @@
 package info.free.duangjike
 
+import android.animation.AnimatorSet
 import android.animation.ObjectAnimator
 import android.content.Context
 import android.graphics.Camera
 import android.graphics.Canvas
 import android.graphics.Paint
 import android.util.AttributeSet
-import android.view.View
-import android.widget.LinearLayout
 import android.widget.RelativeLayout
 
 /**
@@ -17,12 +16,14 @@ import android.widget.RelativeLayout
 open class JikeView : RelativeLayout {
     /*
     * ic_launcher_round 即刻圆图标
+    * ic_launcher 即刻方图标
     * ic_discovertab_entrance_category 搜索图
     * ic_discovertab_entrance_custom_topic 机器人
     * ic_discovertab_entrance_daily 键盘？
     * ic_discovertab_entrance_rankinglist 奖杯
     * */
     var animator: ObjectAnimator? = null
+    var animatorSet = AnimatorSet()
     var paint = Paint(Paint.ANTI_ALIAS_FLAG)
     var camera = Camera()
 
@@ -41,7 +42,9 @@ open class JikeView : RelativeLayout {
 
     open fun startAnimation() {
         animator?.start()
+        animatorSet.start()
     }
+
 
     override fun onDraw(canvas: Canvas?) {
         super.onDraw(canvas)

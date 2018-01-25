@@ -3,11 +3,8 @@ package info.free.duangjike
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.design.widget.TabLayout
-import android.support.v4.app.Fragment
-import android.support.v4.app.FragmentPagerAdapter
 import android.support.v4.view.ViewPager
 import android.support.v7.widget.Toolbar
-import android.view.MenuItem
 import android.widget.ImageButton
 import butterknife.BindView
 import butterknife.ButterKnife
@@ -31,6 +28,7 @@ class MainActivity : AppCompatActivity() {
     init {
         fragments.add(PageFragment.newInstance(/*R.string.anim_fall,*/ R.layout.fragment_fall_down))
         fragments.add(PageFragment.newInstance(/*R.string.anim_fall,*/ R.layout.fragment_flip_dot))
+        fragments.add(PageFragment.newInstance(/*R.string.anim_fall,*/ R.layout.fragment_flipboard_like))
     }
 
     @OnClick(R.id.play_btn)

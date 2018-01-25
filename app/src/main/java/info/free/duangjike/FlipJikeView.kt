@@ -1,9 +1,6 @@
 package info.free.duangjike
 
-import android.animation.ObjectAnimator
 import android.content.Context
-import android.drm.DrmStore
-import android.graphics.*
 import android.util.AttributeSet
 import android.util.Log
 import android.view.MotionEvent
@@ -17,9 +14,6 @@ import kotlin.math.abs
  *
  */
 class FlipJikeView : JikeView {
-    private var jikeDot: Bitmap? = null
-    private var dotLeft = 0f
-    private var dotTop = 0f
 
     private var eventDownX = 0f
     private var eventDownY = 0f
@@ -31,26 +25,9 @@ class FlipJikeView : JikeView {
     constructor(context: Context) : super(context)
     constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)
 
-    init {
-        jikeDot = BitmapFactory.decodeResource(resources, R.mipmap.ic_launcher_round)
-//        animator = ObjectAnimator.ofFloat(this, "dotTop", 0f, 900f)
-//        animator?.duration =2500
-//        animator?.interpolator = BounceInterpolator()
-    }
-
     override fun onAttachedToWindow() {
         super.onAttachedToWindow()
         imageView = findViewById(R.id.image_view)
-    }
-
-    override fun onDraw(canvas: Canvas?) {
-        super.onDraw(canvas)
-        dotLeft = boxCenterX - jikeDot?.width!!.div(2f)
-        dotTop = boxCenterY - jikeDot?.height!!.div(2f)
-
-//        canvas?.save()
-//        canvas?.drawBitmap(jikeDot, dotLeft, dotTop, paint)
-//        canvas?.restore()
     }
 
     override fun onTouchEvent(event: MotionEvent?): Boolean {
@@ -86,7 +63,7 @@ class FlipJikeView : JikeView {
                     if (y > 50) {
                         //down
                         imageView?.animate()?.rotationXBy(-180f*round)
-                        Log.i(mTAG, "move down" + imageView)
+                        Log.i(mTAG, "move down")
                     } else if (y < -50){
                         // up
                         imageView?.animate()?.rotationXBy(180f*round)

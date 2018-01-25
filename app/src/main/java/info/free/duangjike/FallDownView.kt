@@ -42,7 +42,7 @@ class FallDownView : JikeView {
 
     override fun onAttachedToWindow() {
         super.onAttachedToWindow()
-        animator?.start()
+        startAnimation()
     }
 
 
