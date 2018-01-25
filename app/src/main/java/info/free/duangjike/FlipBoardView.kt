@@ -72,6 +72,7 @@ class FlipBoardView : JikeView {
             override fun onAnimationStart(animation: Animator?) {
             }
         })
+        animLastTime = 4
     }
 
 

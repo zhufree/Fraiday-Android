@@ -34,6 +34,10 @@ class PageFragment : Fragment() {
         animView?.startAnimation()
     }
 
+    fun saveGif() {
+        animView?.createGif("test", 1080)
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val args = arguments

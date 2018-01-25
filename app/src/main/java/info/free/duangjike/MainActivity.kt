@@ -35,6 +35,11 @@ class MainActivity : AppCompatActivity() {
         adapter?.curFragment?.startAnimation()
     }
 
+    @OnClick(R.id.save_btn)
+    fun saveGif() {
+        adapter?.curFragment?.saveGif()
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)

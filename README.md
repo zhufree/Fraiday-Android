@@ -10,6 +10,9 @@ Make animation for Jike app
 - 自定义layout，编写动画，使用animator或者自已用canvas画都可以
     - 自定义的layout请继承JikeView，里面定义了一些通用属性和方法
 - 在MainActivity的初始化代码中按照例子添加即可
+- 增加了保存gif的功能（右上角按钮），因为处理bitmap的时间较长，目前没有解决这个问题
+需要手动调整动画播放时间来留出足够的时间处理bitmap；另外截图限定了fragment布局中心位置，宽度为屏幕宽度的正方形，
+如果需要调整范围，请手动改动代码
 
 目前已完成：
 1. Logo掉下来的动画

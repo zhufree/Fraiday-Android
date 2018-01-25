@@ -37,15 +37,19 @@ class LikeAroundView : JikeView {
     constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : super(context, attrs, defStyleAttr)
 
     init {
-        likeHand = BitmapFactory.decodeResource(resources, R.drawable.ic_messages_like_selected)
         shining = BitmapFactory.decodeResource(resources, R.drawable.ic_messages_like_selected_shining)
+        likeHand = BitmapFactory.decodeResource(resources, R.drawable.ic_messages_like_selected)
         animator = ObjectAnimator.ofInt(this, "rotateDegree", 0, 360)
         animator?.duration = 3000
         animator?.interpolator = LinearInterpolator()
+        animLastTime = 18
     }
 
     override fun startAnimation() {
         rotateDegree = 0
+        if (gifFlag) {
+            animator?.duration = 18000
+        }
         super.startAnimation()
     }
 
@@ -62,7 +66,7 @@ class LikeAroundView : JikeView {
         handTop = boxCenterY - jikeDot?.width!!.toFloat() - likeHand?.width!!.toFloat() - 20
 
         canvas?.save()
-        canvas?.scale(2f,2f, boxCenterX, boxCenterY)
+        canvas?.scale(2f, 2f, boxCenterX, boxCenterY)
         canvas?.drawBitmap(jikeDot, dotLeft, dotTop, paint)
         canvas?.restore()
 

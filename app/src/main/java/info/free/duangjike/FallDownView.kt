@@ -34,6 +34,7 @@ class FallDownView : JikeView {
         animator = ObjectAnimator.ofFloat(this, "dotTop", 0f, 900f)
         animator?.duration =2500
         animator?.interpolator = BounceInterpolator()
+        animLastTime = 3
     }
 
 
