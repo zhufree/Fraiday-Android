@@ -19,3 +19,7 @@ Make animation for Jike app
 2. Logo随手指波动翻转的动画（上下和左右），这个部分禁止拦截触摸事件，所以不能左右滑动切换fragment，需要点击顶上的tab切换
 3. 仿flipBoard的Logo翻折动画
 4. 绕圈点赞的动画
+
+
+TODO:
+- [ ] 改进gif保存功能

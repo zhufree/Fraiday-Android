@@ -49,6 +49,8 @@ class LikeAroundView : JikeView {
         rotateDegree = 0
         if (gifFlag) {
             animator?.duration = 18000
+        } else {
+            animator?.duration = 3000
         }
         super.startAnimation()
     }

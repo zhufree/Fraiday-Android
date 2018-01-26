@@ -40,6 +40,7 @@ open class JikeView : RelativeLayout {
     var animatorSet = AnimatorSet()
     var paint = Paint(Paint.ANTI_ALIAS_FLAG)
     var camera = Camera()
+    var jikeYellow = Color.parseColor("#FED710")
 
     var screenWidth = 0
     var screenHeight = 0
@@ -94,9 +95,6 @@ open class JikeView : RelativeLayout {
                     gifCanvas?.save()
                     val clipTop = (screenHeight - boxHeight) + boxCenterY - width.div(2f)
                     val clipBottom = (screenHeight - boxHeight) + boxCenterY + width.div(2f)
-//                    Log.i(mTAG, "screenHeight = " + screenHeight + ", screenWidth = " + screenWidth)
-//                    Log.i(mTAG, "boxHeight = " + boxHeight + ", boxWidth = " + boxWidth)
-//                    Log.i(mTAG, "clipTop = " + clipTop + ", clipBottom = " + clipBottom)
                     gifCanvas?.translate(0f, -clipTop)
                     gifCanvas?.clipRect(0f, -clipTop, width.toFloat(), clipBottom)
                     rootView.draw(gifCanvas)

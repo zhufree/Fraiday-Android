@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<info.free.duangjike.JikeRulerView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/anim_view"
+    android:layout_gravity="bottom"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#ffffff" >
+
+    <ImageView
+        android:id="@+id/image_view"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_centerInParent="true"
+        android:src="@mipmap/ic_launcher_round"
+        android:contentDescription="@string/app_name"/>
+
+    <!--<HorizontalScrollView-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!---->
+        <!--android:focusable="true"-->
+        <!--android:focusableInTouchMode="true">-->
+        <info.free.duangjike.ScrollRuler
+            android:id="@+id/inner_view"
+            android:layout_width="wrap_content"
+            android:layout_height="100dp"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentStart="true"
+            android:background="@color/colorBackground">
+        </info.free.duangjike.ScrollRuler>
+
+    <!--</HorizontalScrollView>-->
+
+</info.free.duangjike.JikeRulerView>

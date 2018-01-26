@@ -28,6 +28,7 @@ class MainActivity : AppCompatActivity() {
         fragments.add(PageFragment.newInstance(/*R.string.anim_fall,*/ R.layout.fragment_flip_dot))
         fragments.add(PageFragment.newInstance(/*R.string.anim_fall,*/ R.layout.fragment_flipboard_like))
         fragments.add(PageFragment.newInstance(/*R.string.anim_fall,*/ R.layout.fragment_like_around))
+        fragments.add(PageFragment.newInstance(/*R.string.anim_fall,*/ R.layout.fragment_ruler))
     }
 
     @OnClick(R.id.play_btn)
