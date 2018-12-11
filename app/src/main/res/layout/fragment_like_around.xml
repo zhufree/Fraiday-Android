@@ -1,7 +1,7 @@
-<info.free.duangjike.LikeAroundView
+<info.free.duangjike.animation.LikeAroundView
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/anim_view"
     android:layout_height="match_parent"
     android:layout_width="match_parent"
     android:background="@color/colorBackground">
-</info.free.duangjike.LikeAroundView>
+</info.free.duangjike.animation.LikeAroundView>

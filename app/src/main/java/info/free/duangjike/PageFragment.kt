@@ -6,6 +6,7 @@ import android.support.v4.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import info.free.duangjike.animation.JikeView
 
 /**
  * Created by zhufree on 2018/1/23.
@@ -47,8 +48,9 @@ class PageFragment : Fragment() {
         }
     }
 
-    override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val view = inflater?.inflate(layoutRes, container, false)
+
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        val view = inflater.inflate(layoutRes, container, false)
         animView = view?.findViewById(R.id.anim_view)
         return view
     }

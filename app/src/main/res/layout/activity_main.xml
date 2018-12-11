@@ -20,6 +20,15 @@
             app:layout_scrollFlags = "scroll|enterAlways">
 
             <ImageButton
+                android:id="@+id/btn_friday"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_star_white_24dp"
+                android:contentDescription="@string/app_name"
+                android:layout_gravity="end"
+                android:layout_marginEnd="20dp"/>
+
+            <ImageButton
                 android:id="@+id/save_btn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

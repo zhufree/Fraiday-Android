@@ -2,55 +2,39 @@ package info.free.duangjike
 
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
-import android.support.design.widget.TabLayout
-import android.support.v4.view.ViewPager
-import android.support.v7.widget.Toolbar
-import android.widget.ImageButton
-import butterknife.BindView
-import butterknife.ButterKnife
-import butterknife.OnClick
+import info.free.duangjike.animation.AnimationAdapter
+import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
-    @BindView(R.id.tab_layout)
-    lateinit var tabLayout: TabLayout
-    @BindView(R.id.view_pager)
-    lateinit var viewPager: ViewPager
-    @BindView(R.id.toolbar)
-    lateinit var toolbar: Toolbar
-    @BindView(R.id.save_btn)
-    lateinit var saveBtn: ImageButton
 
     private var adapter: AnimationAdapter? = null
     private var fragments: MutableList<PageFragment> = emptyList<PageFragment>().toMutableList()
+    private var titles: MutableList<String> = emptyList<String>().toMutableList()
 
     init {
-        fragments.add(PageFragment.newInstance(/*R.string.anim_fall,*/ R.layout.fragment_fall_down))
-        fragments.add(PageFragment.newInstance(/*R.string.anim_fall,*/ R.layout.fragment_flip_dot))
-        fragments.add(PageFragment.newInstance(/*R.string.anim_fall,*/ R.layout.fragment_flipboard_like))
-        fragments.add(PageFragment.newInstance(/*R.string.anim_fall,*/ R.layout.fragment_like_around))
-        fragments.add(PageFragment.newInstance(/*R.string.anim_fall,*/ R.layout.fragment_ruler))
-    }
-
-    @OnClick(R.id.play_btn)
-    fun playAnimation() {
-        adapter?.curFragment?.startAnimation()
-    }
-
-    @OnClick(R.id.save_btn)
-    fun saveGif() {
-        adapter?.curFragment?.saveGif()
+        fragments.add(PageFragment.newInstance(R.layout.fragment_fall_down))
+        fragments.add(PageFragment.newInstance(R.layout.fragment_flip_dot))
+        fragments.add(PageFragment.newInstance(R.layout.fragment_flipboard_like))
+        fragments.add(PageFragment.newInstance(R.layout.fragment_like_around))
+//        fragments.add(PageFragment.newInstance(/*R.string.anim_fall,*/ R.layout.fragment_ruler))
+        titles.add("Fall Down")
+        titles.add("Flip")
+        titles.add("FlipBoard")
+        titles.add("Zan")
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        ButterKnife.bind(this)
 
-        toolbar.setTitle(R.string.anim_fall)
+        toolbar?.setTitle(R.string.anim_fall)
         setSupportActionBar(toolbar)
 
-        adapter = AnimationAdapter(supportFragmentManager, fragments)
-        viewPager.adapter = adapter
-        tabLayout.setupWithViewPager(viewPager)
+        adapter = AnimationAdapter(supportFragmentManager, titles, fragments)
+        view_pager?.adapter = adapter
+        tab_layout?.setupWithViewPager(view_pager)
+
+        play_btn.setOnClickListener { adapter?.curFragment?.startAnimation() }
+        save_btn?.setOnClickListener { adapter?.curFragment?.saveGif() }
     }
 }
