@@ -1,5 +1,6 @@
 package info.free.duangjike
 
+import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import info.free.duangjike.animation.AnimationAdapter
@@ -36,5 +37,8 @@ class MainActivity : AppCompatActivity() {
 
         play_btn.setOnClickListener { adapter?.curFragment?.startAnimation() }
         save_btn?.setOnClickListener { adapter?.curFragment?.saveGif() }
+        btn_friday?.setOnClickListener {
+            startActivity(Intent(this, FridayActivity::class.java))
+        }
     }
 }
