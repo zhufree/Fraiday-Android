@@ -6,7 +6,6 @@ import android.graphics.Paint
 import android.graphics.Path
 import android.support.v4.content.ContextCompat
 import android.util.AttributeSet
-import android.util.Log
 import android.view.View
 
 /**
@@ -22,9 +21,8 @@ class TriangleView : View {
     private val LEFT = 3
     private val DEFAULT_WIDTH = 30
     private val DEFAULT_HEIGHT = 18
-    private val DEFAULT_COLOR = R.color.white
+    private val DEFAULT_COLOR = R.color.jikeWhite
     private var mPaint = Paint()
-    private var mColor = 0
     private var mWidth = 0
     private var mHeight = 0
     private var mDirection = TOP
@@ -39,11 +37,9 @@ class TriangleView : View {
     constructor(context: Context) : super(context)
     constructor(context: Context, attrs: AttributeSet?) : super(context, attrs){
         val typedArray = context.theme.obtainStyledAttributes(attrs, R.styleable.TriangleView, 0, 0)
-        mColor = typedArray.getColor(R.styleable.TriangleView_trv_color, ContextCompat.getColor(getContext(), DEFAULT_COLOR))
+        mPaint.color = typedArray.getColor(R.styleable.TriangleView_trv_color, ContextCompat.getColor(getContext(), DEFAULT_COLOR))
         mDirection = typedArray.getInt(R.styleable.TriangleView_trv_direction, mDirection)
         typedArray.recycle()
-        Log.i("friday", "mColor = $mColor, mDirection = $mDirection")
-        mPaint.color = mColor
     }
     constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : super(context, attrs, defStyleAttr)
 
@@ -87,7 +83,12 @@ class TriangleView : View {
             }
         }
 
-        mPath.close();
+        mPath.close()
         canvas.drawPath(mPath, mPaint)
+    }
+
+    fun setColor(color: Int) {
+        mPaint.color = color
+        invalidate()
     }
 }

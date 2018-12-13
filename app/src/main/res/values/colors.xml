@@ -3,8 +3,9 @@
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
-    <color name="colorBackground">#ffeeff</color>
+    <color name="colorBackground">#F8F8F8</color>
     <color name="jikeYellow">#FFE411</color>
-    <color name="jikeBlue">#3F51B5</color>
+    <color name="jikeBlue">#01A9F4</color>
+    <color name="jikeWhite">#F8F8F8</color>
     <color name="white">#fff</color>
 </resources>
