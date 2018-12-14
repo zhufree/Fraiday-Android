@@ -20,12 +20,23 @@
 
             </intent-filter>
         </activity>
-        <activity android:name=".FridayActivity">
+        <activity android:name=".friday.FridayActivity">
             <intent-filter>
                 <category android:name="android.intent.category.LAUNCHER" />
                 <action android:name="android.intent.action.MAIN" />
             </intent-filter>
         </activity>
+
+        <receiver android:name=".friday.FridayWidgetProvider">
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/widget_info" />
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+                <action android:name="com.seewo.homewidgets.action.CLICK" />
+            </intent-filter>
+        </receiver>
     </application>
+
 
 </manifest>

@@ -1,4 +1,4 @@
-package info.free.duangjike
+package info.free.duangjike.friday
 
 import android.app.AlertDialog
 import android.app.WallpaperManager
@@ -15,19 +15,23 @@ import android.view.LayoutInflater
 import android.view.ViewGroup.LayoutParams.MATCH_PARENT
 import android.view.Window
 import android.view.WindowManager
+import android.widget.SimpleAdapter
 import android.widget.Toast
 import android.widget.Toast.LENGTH_SHORT
+import info.free.duangjike.R
+import info.free.duangjike.ThemeUtil
+import info.free.duangjike.Util
 import io.reactivex.BackpressureStrategy
 import io.reactivex.Flowable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.activity_friday.*
 import kotlinx.android.synthetic.main.layout_dialog_input.view.*
+import kotlinx.android.synthetic.main.layout_dialog_pick_color.*
 import java.io.IOException
 import java.text.SimpleDateFormat
 import java.util.*
 import java.util.Calendar.*
-import java.util.logging.SimpleFormatter
 
 
 class FridayActivity : AppCompatActivity() {
@@ -54,7 +58,6 @@ class FridayActivity : AppCompatActivity() {
         blue = resources.getColor(R.color.jikeBlue)
         yellow = resources.getColor(R.color.jikeYellow)
         setDate()
-        switchTypeFace(songType)
         refreshTheme()
         setEvent()
     }
@@ -112,7 +115,7 @@ class FridayActivity : AppCompatActivity() {
             }, BackpressureStrategy.BUFFER).subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe {
-                        val format = SimpleDateFormat("yyyy-mm-dd-hh:mm:ss")
+                        val format = SimpleDateFormat("yyyy-MM-dd-hh:mm:ss")
                         Util.saveBitmapFile(it, format.format(today.time))
                         Toast.makeText(this, "Ojbk！", LENGTH_SHORT).show()
                     }
@@ -160,6 +163,10 @@ class FridayActivity : AppCompatActivity() {
     }
 
     private fun refreshTheme() {
+        cl_picture_container?.setBackgroundColor(FridayPreference.getBgColor())
+        tv_question?.setBackgroundColor(FridayPreference.getBubbleColor())
+        tv_triangle?.setColor(FridayPreference.getBubbleColor())
+        switchTypeFace(FridayPreference.getFontType())
         tv_is_friday?.paint?.isFakeBoldText = true
         tv_question?.paint?.isFakeBoldText = true
         tv_question?.post {
@@ -199,16 +206,19 @@ class FridayActivity : AppCompatActivity() {
     }
 
     private fun changeBubbleColor(color: Int) {
+        FridayPreference.setBubbleColor(color)
         tv_question.background = ThemeUtil.customShape(color, color, 0,
                 tv_question.height.toFloat() / 2)
         tv_triangle.setColor(color)
     }
 
     private fun changeBgColor(color: Int) {
+        FridayPreference.setBgColor(color)
         cl_picture_container.setBackgroundColor(color)
     }
 
     private fun switchTypeFace(fontType: Int) {
+        FridayPreference.setFontType(fontType)
         val typeface = when (fontType) {
             0 -> Typeface.createFromAsset(assets, "simsun.ttc")
             1 -> Typeface.createFromAsset(assets, "simkai.ttf")
@@ -240,4 +250,30 @@ class FridayActivity : AppCompatActivity() {
             else -> "Friday"
         }
     }
+
+//    private fun showPickColorDialog() {
+//        val inputView = LayoutInflater.from(this).inflate(R.layout.layout_dialog_pick_color, null)
+//        val colorMap = HashMap<String, String>(Util.colorList, Util.colorList)
+//        gv_pick_color.adapter = SimpleAdapter(this, Util.colorList.zip(Util.colorList), R.layout.item_color)
+//        val colorDialog = AlertDialog.Builder(this)
+//                .setTitle("自定义${titleString}颜色")
+//                .setView(inputView)
+//                .setPositiveButton("OK") { _, _ -> }
+//                .setNegativeButton("Cancel") { dialog, _ -> dialog.dismiss() }
+//                .show()
+//        colorDialog.show()
+//        colorDialog.getButton(BUTTON_POSITIVE).setOnClickListener {
+//            val colorString = inputView.et_color_input.text.toString()
+//            if (colorString.startsWith("#")&&(colorString.length == 7||colorString.length == 7)) {
+//                when (type) {
+//                    bubbleType -> changeBubbleColor(Color.parseColor(colorString))
+//                    bgType -> changeBgColor(Color.parseColor(colorString))
+//                    else -> changeBubbleColor(Color.parseColor(colorString))
+//                }
+//                colorDialog.dismiss()
+//            } else {
+//                Toast.makeText(this, "请输入正确的颜色值", LENGTH_SHORT).show()
+//            }
+//        }
+//    }
 }

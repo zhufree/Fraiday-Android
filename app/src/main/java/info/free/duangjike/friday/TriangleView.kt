@@ -1,4 +1,4 @@
-package info.free.duangjike
+package info.free.duangjike.friday
 
 import android.content.Context
 import android.graphics.Canvas
@@ -7,6 +7,7 @@ import android.graphics.Path
 import android.support.v4.content.ContextCompat
 import android.util.AttributeSet
 import android.view.View
+import info.free.duangjike.R
 
 /**
  * Created by zhufree on 2018/12/12.
