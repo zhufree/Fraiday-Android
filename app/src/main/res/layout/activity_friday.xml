@@ -183,7 +183,7 @@
             android:background="@color/jikeBlue"/>
         
         <TextView
-            android:id="@+id/tv_face_type_song"
+            android:id="@+id/tv_face_type_shu_song"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             app:layout_constraintDimensionRatio="1:1"
@@ -191,7 +191,22 @@
             app:layout_constraintBottom_toTopOf="@id/tv_size_square"
             android:layout_marginBottom="16dp"
             android:layout_marginStart="16dp"
-            android:text="宋"
+            android:text="书"
+            android:gravity="center"
+            android:textSize="16sp"
+            android:padding="4dp"
+            android:textColor="@color/white"
+            android:background="@color/jikeBlue"/>
+        <TextView
+            android:id="@+id/tv_face_type_fang_song"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintDimensionRatio="1:1"
+            app:layout_constraintStart_toEndOf="@id/tv_face_type_shu_song"
+            app:layout_constraintTop_toTopOf="@id/tv_face_type_shu_song"
+            app:layout_constraintBottom_toBottomOf="@id/tv_face_type_shu_song"
+            android:layout_marginStart="16dp"
+            android:text="仿"
             android:gravity="center"
             android:textSize="16sp"
             android:padding="4dp"
@@ -202,11 +217,26 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             app:layout_constraintDimensionRatio="1:1"
-            app:layout_constraintStart_toEndOf="@id/tv_face_type_song"
-            app:layout_constraintTop_toTopOf="@id/tv_face_type_song"
-            app:layout_constraintBottom_toBottomOf="@id/tv_face_type_song"
+            app:layout_constraintStart_toEndOf="@id/tv_face_type_fang_song"
+            app:layout_constraintTop_toTopOf="@id/tv_face_type_fang_song"
+            app:layout_constraintBottom_toBottomOf="@id/tv_face_type_fang_song"
             android:layout_marginStart="16dp"
             android:text="楷"
+            android:gravity="center"
+            android:textSize="16sp"
+            android:padding="4dp"
+            android:textColor="@color/white"
+            android:background="@color/jikeBlue"/>
+        <TextView
+            android:id="@+id/tv_face_type_hei"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintDimensionRatio="1:1"
+            app:layout_constraintStart_toEndOf="@id/tv_face_type_kai"
+            app:layout_constraintTop_toTopOf="@id/tv_face_type_kai"
+            app:layout_constraintBottom_toBottomOf="@id/tv_face_type_kai"
+            android:layout_marginStart="16dp"
+            android:text="黑"
             android:gravity="center"
             android:textSize="16sp"
             android:padding="4dp"
@@ -230,7 +260,7 @@
             app:layout_constraintStart_toStartOf="parent"
             android:layout_marginStart="16dp"
             android:text="气泡颜色"
-            app:layout_constraintBottom_toTopOf="@id/tv_face_type_song"
+            app:layout_constraintBottom_toTopOf="@id/tv_face_type_fang_song"
             android:layout_marginBottom="16dp"/>
 
         <View

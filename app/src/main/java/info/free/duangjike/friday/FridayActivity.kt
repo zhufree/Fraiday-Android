@@ -6,10 +6,13 @@ import android.app.WallpaperManager.FLAG_LOCK
 import android.app.WallpaperManager.FLAG_SYSTEM
 import android.content.Context
 import android.content.DialogInterface.BUTTON_POSITIVE
+import android.content.Intent
+import android.content.Intent.ACTION_SEND
 import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Typeface
+import android.net.Uri
 import android.os.Bundle
 import android.support.constraint.ConstraintLayout
 import android.support.v7.app.AppCompatActivity
@@ -37,8 +40,10 @@ import java.util.Calendar.*
 
 class FridayActivity : AppCompatActivity() {
 
-    private val songType = 0
+    private val shuSongType = 0
     private val kaiType = 1
+    private val fangSongType = 2
+    private val heiType = 3
 
     private val bubbleType = 0
     private val bgType = 1
@@ -67,9 +72,13 @@ class FridayActivity : AppCompatActivity() {
     }
 
     private fun setEvent() {
-        tv_face_type_song?.setOnClickListener {
-            switchTypeFace(songType)
+        tv_face_type_shu_song?.setOnClickListener {
+            switchTypeFace(shuSongType)
         }
+        tv_face_type_fang_song?.setOnClickListener {
+            switchTypeFace(fangSongType)
+        }
+        tv_face_type_hei?.setOnClickListener { switchTypeFace(heiType) }
         tv_face_type_kai?.setOnClickListener { switchTypeFace(kaiType) }
 
         tv_size_square?.setOnClickListener {
@@ -106,6 +115,28 @@ class FridayActivity : AppCompatActivity() {
                         Util.saveBitmapFile(it, format.format(today.time))
                         Toast.makeText(this, "Ojbk！", LENGTH_SHORT).show()
                     }
+        }
+
+        tv_share?.setOnClickListener {
+            Flowable.create<Bitmap>({ emitter ->
+                val bitmap = Bitmap.createBitmap(cl_picture_container.width, cl_picture_container.height,
+                        Bitmap.Config.RGB_565)
+                //使用Canvas，调用自定义view控件的onDraw方法，绘制图片
+                val canvas = Canvas(bitmap)
+                cl_picture_container?.draw(canvas)
+                emitter.onNext(bitmap)
+                emitter.onComplete()
+            }, BackpressureStrategy.BUFFER).subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe {
+                        val format = SimpleDateFormat("yyyy-MM-dd-hh:mm:ss")
+                        val shareIntent = Intent(ACTION_SEND)
+                        shareIntent.type = "image/*"
+                        val uri = Uri.fromFile(Util.saveBitmapFile(it, format.format(today.time)))
+                        shareIntent.putExtra(Intent.EXTRA_STREAM, uri)
+                        this.startActivity(Intent.createChooser(shareIntent, "分享到..."))
+                    }
+
         }
 
         v_bubble_color_blue?.setOnClickListener { changeBubbleColor(blue) }
@@ -184,9 +215,17 @@ class FridayActivity : AppCompatActivity() {
             tv_face_type_kai?.background = ThemeUtil.customShape(blue, blue, 0,
                     tv_face_type_kai.height.toFloat() / 2)
         }
-        tv_face_type_song.post {
-            tv_face_type_song?.background = ThemeUtil.customShape(blue, blue, 0,
-                    tv_face_type_song.height.toFloat() / 2)
+        tv_face_type_hei.post {
+            tv_face_type_hei?.background = ThemeUtil.customShape(blue, blue, 0,
+                    tv_face_type_hei.height.toFloat() / 2)
+        }
+        tv_face_type_fang_song.post {
+            tv_face_type_fang_song?.background = ThemeUtil.customShape(blue, blue, 0,
+                    tv_face_type_fang_song.height.toFloat() / 2)
+        }
+        tv_face_type_shu_song.post {
+            tv_face_type_shu_song?.background = ThemeUtil.customShape(blue, blue, 0,
+                    tv_face_type_shu_song.height.toFloat() / 2)
         }
         tv_size_full.post {
             tv_size_full?.background = ThemeUtil.customShape(blue, blue, 0,
@@ -237,9 +276,11 @@ class FridayActivity : AppCompatActivity() {
     private fun switchTypeFace(fontType: Int) {
         FridayPreference.setFontType(fontType)
         val typeface = when (fontType) {
-            0 -> Typeface.createFromAsset(assets, "simsun.ttc")
-            1 -> Typeface.createFromAsset(assets, "minisimkai.ttf")
-            else -> Typeface.createFromAsset(assets, "simsun.ttc")
+            shuSongType -> Typeface.createFromAsset(assets, "FZSSJW.TTF")
+            fangSongType -> Typeface.createFromAsset(assets, "FZFSJW.TTF")
+            heiType -> Typeface.createFromAsset(assets, "FZHTJW.TTF")
+            kaiType -> Typeface.createFromAsset(assets, "FZKTJW.TTF")
+            else -> Typeface.createFromAsset(assets, "FZKTJW.TTF")
         }
         tv_is_friday?.typeface = typeface
         tv_question?.typeface = typeface
