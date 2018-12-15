@@ -2,6 +2,8 @@ package info.free.duangjike.friday
 
 import android.app.AlertDialog
 import android.app.WallpaperManager
+import android.app.WallpaperManager.FLAG_LOCK
+import android.app.WallpaperManager.FLAG_SYSTEM
 import android.content.Context
 import android.content.DialogInterface.BUTTON_POSITIVE
 import android.graphics.Bitmap
@@ -15,7 +17,6 @@ import android.view.LayoutInflater
 import android.view.ViewGroup.LayoutParams.MATCH_PARENT
 import android.view.Window
 import android.view.WindowManager
-import android.widget.SimpleAdapter
 import android.widget.Toast
 import android.widget.Toast.LENGTH_SHORT
 import info.free.duangjike.R
@@ -27,7 +28,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.activity_friday.*
 import kotlinx.android.synthetic.main.layout_dialog_input.view.*
-import kotlinx.android.synthetic.main.layout_dialog_pick_color.*
+import kotlinx.android.synthetic.main.layout_dialog_pick_color.view.*
 import java.io.IOException
 import java.text.SimpleDateFormat
 import java.util.*
@@ -41,6 +42,9 @@ class FridayActivity : AppCompatActivity() {
 
     private val bubbleType = 0
     private val bgType = 1
+
+    private val wallType = 0
+    private val lockType = 1
 
     private var white: Int = -1
     private var blue: Int = -1
@@ -82,26 +86,9 @@ class FridayActivity : AppCompatActivity() {
         }
 
         tv_set_lock?.setOnClickListener {
-            try {
-                val wpm = getSystemService(Context.WALLPAPER_SERVICE) as WallpaperManager
-                Flowable.create<Bitmap>({ emitter ->
-                    val bitmap = Bitmap.createBitmap(cl_picture_container.width, cl_picture_container.height,
-                            Bitmap.Config.RGB_565)
-                    //使用Canvas，调用自定义view控件的onDraw方法，绘制图片
-                    val canvas = Canvas(bitmap)
-                    cl_picture_container?.draw(canvas)
-                    emitter.onNext(bitmap)
-                    emitter.onComplete()
-                }, BackpressureStrategy.BUFFER).subscribeOn(Schedulers.io())
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe {
-                            wpm.setBitmap(it)
-                            Toast.makeText(this, "Ojbk！", LENGTH_SHORT).show()
-                        }
-            } catch (e: IOException) {
-                e.printStackTrace()
-            }
+            setBitmap(lockType)
         }
+        tv_set_wallpaper?.setOnClickListener { setBitmap(wallType) }
 
         tv_save?.setOnClickListener {
             Flowable.create<Bitmap>({ emitter ->
@@ -130,6 +117,30 @@ class FridayActivity : AppCompatActivity() {
 
         tv_custom_bubble_color.setOnClickListener { showInputDialog(bubbleType) }
         tv_custom_bg_color.setOnClickListener { showInputDialog(bgType) }
+        tv_more_bubble_color.setOnClickListener { showPickColorDialog(bubbleType) }
+        tv_more_bg_color.setOnClickListener { showPickColorDialog(bgType) }
+    }
+
+    private fun setBitmap(type: Int) {
+        try {
+            val wpm = getSystemService(Context.WALLPAPER_SERVICE) as WallpaperManager
+            Flowable.create<Bitmap>({ emitter ->
+                val bitmap = Bitmap.createBitmap(cl_picture_container.width, cl_picture_container.height,
+                        Bitmap.Config.RGB_565)
+                //使用Canvas，调用自定义view控件的onDraw方法，绘制图片
+                val canvas = Canvas(bitmap)
+                cl_picture_container?.draw(canvas)
+                emitter.onNext(bitmap)
+                emitter.onComplete()
+            }, BackpressureStrategy.BUFFER).subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe {
+                        wpm.setBitmap(it, null, true, if (type == wallType) FLAG_SYSTEM else FLAG_LOCK or FLAG_SYSTEM)
+                        Toast.makeText(this, "Ojbk！", LENGTH_SHORT).show()
+                    }
+        } catch (e: IOException) {
+            e.printStackTrace()
+        }
     }
 
     private fun showInputDialog(type: Int) {
@@ -145,11 +156,11 @@ class FridayActivity : AppCompatActivity() {
                 .setView(inputView)
                 .setPositiveButton("OK") { _, _ -> }
                 .setNegativeButton("Cancel") { dialog, _ -> dialog.dismiss() }
-                .show()
+                .create()
         colorDialog.show()
         colorDialog.getButton(BUTTON_POSITIVE).setOnClickListener {
             val colorString = inputView.et_color_input.text.toString()
-            if (colorString.startsWith("#")&&(colorString.length == 7||colorString.length == 7)) {
+            if (colorString.startsWith("#") && (colorString.length == 7 || colorString.length == 7)) {
                 when (type) {
                     bubbleType -> changeBubbleColor(Color.parseColor(colorString))
                     bgType -> changeBgColor(Color.parseColor(colorString))
@@ -164,15 +175,11 @@ class FridayActivity : AppCompatActivity() {
 
     private fun refreshTheme() {
         cl_picture_container?.setBackgroundColor(FridayPreference.getBgColor())
-        tv_question?.setBackgroundColor(FridayPreference.getBubbleColor())
-        tv_triangle?.setColor(FridayPreference.getBubbleColor())
+        changeBubbleColor(FridayPreference.getBubbleColor())
         switchTypeFace(FridayPreference.getFontType())
         tv_is_friday?.paint?.isFakeBoldText = true
         tv_question?.paint?.isFakeBoldText = true
-        tv_question?.post {
-            tv_question?.background = ThemeUtil.customShape(white, white, 0,
-                    tv_question.height.toFloat() / 2)
-        }
+
         tv_face_type_kai.post {
             tv_face_type_kai?.background = ThemeUtil.customShape(blue, blue, 0,
                     tv_face_type_kai.height.toFloat() / 2)
@@ -189,6 +196,14 @@ class FridayActivity : AppCompatActivity() {
             tv_size_square?.background = ThemeUtil.customShape(blue, blue, 0,
                     tv_size_square.height.toFloat() / 2)
         }
+        tv_set_wallpaper.post {
+            tv_set_wallpaper?.background = ThemeUtil.customShape(blue, blue, 0,
+                    tv_set_wallpaper.height.toFloat() / 2)
+        }
+        tv_share.post {
+            tv_share?.background = ThemeUtil.customShape(blue, blue, 0,
+                    tv_share.height.toFloat() / 2)
+        }
         tv_save.post {
             tv_save?.background = ThemeUtil.customShape(blue, blue, 0,
                     tv_save.height.toFloat() / 2)
@@ -197,18 +212,20 @@ class FridayActivity : AppCompatActivity() {
             tv_set_lock?.background = ThemeUtil.customShape(blue, blue, 0,
                     tv_set_lock.height.toFloat() / 2)
         }
-        v_bubble_color_white.background = ThemeUtil.customShape(white, white, 0, ThemeUtil.dip2px(10).toFloat())
-        v_bubble_color_yellow.background = ThemeUtil.customShape(yellow, yellow, 0, ThemeUtil.dip2px(10).toFloat())
-        v_bubble_color_blue.background = ThemeUtil.customShape(blue, blue, 0, ThemeUtil.dip2px(10).toFloat())
-        v_bg_color_white.background = ThemeUtil.customShape(white, white, 0, ThemeUtil.dip2px(10).toFloat())
-        v_bg_color_yellow.background = ThemeUtil.customShape(yellow, yellow, 0, ThemeUtil.dip2px(10).toFloat())
-        v_bg_color_blue.background = ThemeUtil.customShape(blue, blue, 0, ThemeUtil.dip2px(10).toFloat())
+        v_bubble_color_white.background = ThemeUtil.customShape(white, white, 0, ThemeUtil.dip2px(10))
+        v_bubble_color_yellow.background = ThemeUtil.customShape(yellow, yellow, 0, ThemeUtil.dip2px(10))
+        v_bubble_color_blue.background = ThemeUtil.customShape(blue, blue, 0, ThemeUtil.dip2px(10))
+        v_bg_color_white.background = ThemeUtil.customShape(white, white, 0, ThemeUtil.dip2px(10))
+        v_bg_color_yellow.background = ThemeUtil.customShape(yellow, yellow, 0, ThemeUtil.dip2px(10))
+        v_bg_color_blue.background = ThemeUtil.customShape(blue, blue, 0, ThemeUtil.dip2px(10))
     }
 
     private fun changeBubbleColor(color: Int) {
         FridayPreference.setBubbleColor(color)
-        tv_question.background = ThemeUtil.customShape(color, color, 0,
-                tv_question.height.toFloat() / 2)
+        tv_question?.post {
+            tv_question?.background = ThemeUtil.customShape(color, color, 0,
+                    tv_question.height.toFloat() / 2)
+        }
         tv_triangle.setColor(color)
     }
 
@@ -221,7 +238,7 @@ class FridayActivity : AppCompatActivity() {
         FridayPreference.setFontType(fontType)
         val typeface = when (fontType) {
             0 -> Typeface.createFromAsset(assets, "simsun.ttc")
-            1 -> Typeface.createFromAsset(assets, "simkai.ttf")
+            1 -> Typeface.createFromAsset(assets, "minisimkai.ttf")
             else -> Typeface.createFromAsset(assets, "simsun.ttc")
         }
         tv_is_friday?.typeface = typeface
@@ -251,29 +268,29 @@ class FridayActivity : AppCompatActivity() {
         }
     }
 
-//    private fun showPickColorDialog() {
-//        val inputView = LayoutInflater.from(this).inflate(R.layout.layout_dialog_pick_color, null)
-//        val colorMap = HashMap<String, String>(Util.colorList, Util.colorList)
-//        gv_pick_color.adapter = SimpleAdapter(this, Util.colorList.zip(Util.colorList), R.layout.item_color)
-//        val colorDialog = AlertDialog.Builder(this)
-//                .setTitle("自定义${titleString}颜色")
-//                .setView(inputView)
-//                .setPositiveButton("OK") { _, _ -> }
-//                .setNegativeButton("Cancel") { dialog, _ -> dialog.dismiss() }
-//                .show()
-//        colorDialog.show()
-//        colorDialog.getButton(BUTTON_POSITIVE).setOnClickListener {
-//            val colorString = inputView.et_color_input.text.toString()
-//            if (colorString.startsWith("#")&&(colorString.length == 7||colorString.length == 7)) {
-//                when (type) {
-//                    bubbleType -> changeBubbleColor(Color.parseColor(colorString))
-//                    bgType -> changeBgColor(Color.parseColor(colorString))
-//                    else -> changeBubbleColor(Color.parseColor(colorString))
-//                }
-//                colorDialog.dismiss()
-//            } else {
-//                Toast.makeText(this, "请输入正确的颜色值", LENGTH_SHORT).show()
-//            }
-//        }
-//    }
+    private fun showPickColorDialog(type: Int) {
+        val titleString = when (type) {
+            bubbleType -> "气泡"
+            bgType -> "背景"
+            else -> "气泡"
+        }
+        val inputView = LayoutInflater.from(this).inflate(R.layout.layout_dialog_pick_color, null)
+
+        inputView.gv_pick_color.adapter = GridColorAdapter(Util.colorList, this)
+        inputView.gv_pick_color.setOnItemClickListener { _, _, position, id ->
+            val colorString = Util.colorList[position]
+            when (type) {
+                bubbleType -> changeBubbleColor(Color.parseColor(colorString))
+                bgType -> changeBgColor(Color.parseColor(colorString))
+                else -> changeBubbleColor(Color.parseColor(colorString))
+            }
+        }
+        val colorDialog = AlertDialog.Builder(this)
+                .setTitle("更多${titleString}颜色")
+                .setView(inputView)
+                .setPositiveButton("OK") { _, _ -> }
+                .setNegativeButton("Cancel") { _, _ ->  }
+                .create()
+        colorDialog.show()
+    }
 }

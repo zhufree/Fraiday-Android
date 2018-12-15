@@ -12,7 +12,7 @@ import info.free.duangjike.DuangApplication
 object FridayPreference {
     private const val FRIDAY_PREF = "friday"
     private const val BUBBLE_COLOR = "bubble_color"
-    private const val BG_COLOR = "bubble_color"
+    private const val BG_COLOR = "bg_color"
     private const val FONT_TYPE = "font_type"
 
     fun setBubbleColor(color: Int) {
