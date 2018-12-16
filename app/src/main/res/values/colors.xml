@@ -7,5 +7,6 @@
     <color name="jikeYellow">#FFE411</color>
     <color name="jikeBlue">#01A9F4</color>
     <color name="jikeWhite">#F8F8F8</color>
+    <color name="jikeBlack">#404040</color>
     <color name="white">#fff</color>
 </resources>

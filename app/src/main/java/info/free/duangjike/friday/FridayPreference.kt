@@ -13,6 +13,7 @@ object FridayPreference {
     private const val FRIDAY_PREF = "friday"
     private const val BUBBLE_COLOR = "bubble_color"
     private const val BG_COLOR = "bg_color"
+    private const val TEXT_COLOR = "text_color"
     private const val FONT_TYPE = "font_type"
 
     fun setBubbleColor(color: Int) {
@@ -20,6 +21,9 @@ object FridayPreference {
     }
     fun setBgColor(color: Int) {
         setIntValue(FRIDAY_PREF, BG_COLOR, color)
+    }
+    fun setTextColor(color: Int) {
+        setIntValue(FRIDAY_PREF, TEXT_COLOR, color)
     }
     fun setFontType(font: Int) {
         setIntValue(FRIDAY_PREF, FONT_TYPE, font)
@@ -29,6 +33,9 @@ object FridayPreference {
     }
     fun getBgColor(): Int {
         return getIntValue(FRIDAY_PREF, BG_COLOR)
+    }
+    fun getTextColor(): Int {
+        return getIntValue(FRIDAY_PREF, TEXT_COLOR)
     }
     fun getFontType(): Int {
         return getIntValue(FRIDAY_PREF, FONT_TYPE)

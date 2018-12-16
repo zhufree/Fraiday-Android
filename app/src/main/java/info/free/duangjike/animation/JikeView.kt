@@ -67,8 +67,8 @@ open class JikeView : RelativeLayout {
     init {
         screenWidth = context.resources.displayMetrics.widthPixels
         screenHeight = context.resources.displayMetrics.heightPixels
-        jikeLogo = BitmapFactory.decodeResource(resources, R.mipmap.ic_launcher)
-        jikeDot = BitmapFactory.decodeResource(resources, R.mipmap.ic_launcher_round)
+        jikeLogo = BitmapFactory.decodeResource(resources, R.mipmap.jike_logo)
+        jikeDot = BitmapFactory.decodeResource(resources, R.mipmap.jike_logo_round)
         tempBitmap = Bitmap.createBitmap(screenWidth, screenWidth, Bitmap.Config.RGB_565)
         gifCanvas = Canvas(tempBitmap)
     }

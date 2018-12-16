@@ -8,6 +8,8 @@ import android.content.Context
 import android.content.DialogInterface.BUTTON_POSITIVE
 import android.content.Intent
 import android.content.Intent.ACTION_SEND
+import android.content.Intent.ACTION_VIEW
+import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.Color
@@ -47,6 +49,7 @@ class FridayActivity : AppCompatActivity() {
 
     private val bubbleType = 0
     private val bgType = 1
+    private val textType = 2
 
     private val wallType = 0
     private val lockType = 1
@@ -54,7 +57,11 @@ class FridayActivity : AppCompatActivity() {
     private var white: Int = -1
     private var blue: Int = -1
     private var yellow: Int = -1
+    private var black: Int = -1
     private val today = Calendar.getInstance(Locale.CHINA)
+    private val fridayLink = "jike://page.jk/topic/565ac9dd4b715411006b5ecd"
+    private val downJikeLink = "http://a.app.qq.com/o/simple.jsp?pkgname=com.ruguoapp.jike&ckey=CK1411402428437"
+    private val jikePackageName = "com.ruguoapp.jike"
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -66,6 +73,7 @@ class FridayActivity : AppCompatActivity() {
         white = resources.getColor(R.color.jikeWhite)
         blue = resources.getColor(R.color.jikeBlue)
         yellow = resources.getColor(R.color.jikeYellow)
+        black = resources.getColor(R.color.jikeBlack)
         setDate()
         refreshTheme()
         setEvent()
@@ -94,8 +102,13 @@ class FridayActivity : AppCompatActivity() {
             cl_picture_container.layoutParams = containerLp
         }
 
-        tv_set_lock?.setOnClickListener {
-            setBitmap(lockType)
+        tv_go_friday?.setOnClickListener {
+            //遍历所有应用
+            val pkgInfoList = packageManager.getInstalledApplications(PackageManager.GET_META_DATA)
+            val hasJike = pkgInfoList.filter { it.processName == jikePackageName }.isNotEmpty()
+            val jikeIntent = Intent(ACTION_VIEW)
+                jikeIntent.data = Uri.parse(if (hasJike) fridayLink else downJikeLink)
+                startActivity(jikeIntent)
         }
         tv_set_wallpaper?.setOnClickListener { setBitmap(wallType) }
 
@@ -145,11 +158,15 @@ class FridayActivity : AppCompatActivity() {
         v_bg_color_blue?.setOnClickListener { changeBgColor(blue) }
         v_bg_color_white?.setOnClickListener { changeBgColor(white) }
         v_bg_color_yellow?.setOnClickListener { changeBgColor(yellow) }
+        v_text_color_white?.setOnClickListener { changeTextColor(white) }
+        v_text_color_black?.setOnClickListener { changeTextColor(black) }
 
         tv_custom_bubble_color.setOnClickListener { showInputDialog(bubbleType) }
         tv_custom_bg_color.setOnClickListener { showInputDialog(bgType) }
+        tv_custom_text_color.setOnClickListener { showInputDialog(textType) }
         tv_more_bubble_color.setOnClickListener { showPickColorDialog(bubbleType) }
         tv_more_bg_color.setOnClickListener { showPickColorDialog(bgType) }
+        tv_more_text_color.setOnClickListener { showPickColorDialog(textType) }
     }
 
     private fun setBitmap(type: Int) {
@@ -166,7 +183,8 @@ class FridayActivity : AppCompatActivity() {
             }, BackpressureStrategy.BUFFER).subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe {
-                        wpm.setBitmap(it, null, true, if (type == wallType) FLAG_SYSTEM else FLAG_LOCK or FLAG_SYSTEM)
+                        wpm.setBitmap(it, null, true, if (type == wallType) FLAG_SYSTEM
+                        else FLAG_LOCK)
                         Toast.makeText(this, "Ojbk！", LENGTH_SHORT).show()
                     }
         } catch (e: IOException) {
@@ -180,6 +198,7 @@ class FridayActivity : AppCompatActivity() {
         val titleString = when (type) {
             bubbleType -> "气泡"
             bgType -> "背景"
+            textType -> "文字"
             else -> "气泡"
         }
         val colorDialog = AlertDialog.Builder(this)
@@ -195,6 +214,7 @@ class FridayActivity : AppCompatActivity() {
                 when (type) {
                     bubbleType -> changeBubbleColor(Color.parseColor(colorString))
                     bgType -> changeBgColor(Color.parseColor(colorString))
+                    textType -> changeTextColor(Color.parseColor(colorString))
                     else -> changeBubbleColor(Color.parseColor(colorString))
                 }
                 colorDialog.dismiss()
@@ -207,6 +227,7 @@ class FridayActivity : AppCompatActivity() {
     private fun refreshTheme() {
         cl_picture_container?.setBackgroundColor(FridayPreference.getBgColor())
         changeBubbleColor(FridayPreference.getBubbleColor())
+        changeTextColor(FridayPreference.getTextColor())
         switchTypeFace(FridayPreference.getFontType())
         tv_is_friday?.paint?.isFakeBoldText = true
         tv_question?.paint?.isFakeBoldText = true
@@ -247,9 +268,9 @@ class FridayActivity : AppCompatActivity() {
             tv_save?.background = ThemeUtil.customShape(blue, blue, 0,
                     tv_save.height.toFloat() / 2)
         }
-        tv_set_lock.post {
-            tv_set_lock?.background = ThemeUtil.customShape(blue, blue, 0,
-                    tv_set_lock.height.toFloat() / 2)
+        tv_go_friday.post {
+            tv_go_friday?.background = ThemeUtil.customShape(blue, blue, 0,
+                    tv_go_friday.height.toFloat() / 2)
         }
         v_bubble_color_white.background = ThemeUtil.customShape(white, white, 0, ThemeUtil.dip2px(10))
         v_bubble_color_yellow.background = ThemeUtil.customShape(yellow, yellow, 0, ThemeUtil.dip2px(10))
@@ -257,6 +278,8 @@ class FridayActivity : AppCompatActivity() {
         v_bg_color_white.background = ThemeUtil.customShape(white, white, 0, ThemeUtil.dip2px(10))
         v_bg_color_yellow.background = ThemeUtil.customShape(yellow, yellow, 0, ThemeUtil.dip2px(10))
         v_bg_color_blue.background = ThemeUtil.customShape(blue, blue, 0, ThemeUtil.dip2px(10))
+        v_text_color_white.background = ThemeUtil.customShape(white, white, 0, ThemeUtil.dip2px(10))
+        v_text_color_black.background = ThemeUtil.customShape(black, black, 0, ThemeUtil.dip2px(10))
     }
 
     private fun changeBubbleColor(color: Int) {
@@ -271,6 +294,12 @@ class FridayActivity : AppCompatActivity() {
     private fun changeBgColor(color: Int) {
         FridayPreference.setBgColor(color)
         cl_picture_container.setBackgroundColor(color)
+    }
+    private fun changeTextColor(color: Int) {
+        FridayPreference.setTextColor(color)
+        tv_question?.setTextColor(color)
+        tv_is_friday?.setTextColor(color)
+        tv_today?.setTextColor(color)
     }
 
     private fun switchTypeFace(fontType: Int) {
@@ -313,16 +342,18 @@ class FridayActivity : AppCompatActivity() {
         val titleString = when (type) {
             bubbleType -> "气泡"
             bgType -> "背景"
+            textType -> "字体"
             else -> "气泡"
         }
         val inputView = LayoutInflater.from(this).inflate(R.layout.layout_dialog_pick_color, null)
 
         inputView.gv_pick_color.adapter = GridColorAdapter(Util.colorList, this)
-        inputView.gv_pick_color.setOnItemClickListener { _, _, position, id ->
+        inputView.gv_pick_color.setOnItemClickListener { _, _, position, _ ->
             val colorString = Util.colorList[position]
             when (type) {
                 bubbleType -> changeBubbleColor(Color.parseColor(colorString))
                 bgType -> changeBgColor(Color.parseColor(colorString))
+                textType -> changeTextColor(Color.parseColor(colorString))
                 else -> changeBubbleColor(Color.parseColor(colorString))
             }
         }
