@@ -52,7 +52,6 @@ class FridayActivity : AppCompatActivity() {
     private val textType = 2
 
     private val wallType = 0
-    private val lockType = 1
 
     private var white: Int = -1
     private var blue: Int = -1
@@ -300,6 +299,8 @@ class FridayActivity : AppCompatActivity() {
         tv_question?.setTextColor(color)
         tv_is_friday?.setTextColor(color)
         tv_today?.setTextColor(color)
+        tv_color_name?.text = ""
+        tv_color_name.setTextColor(color)
     }
 
     private fun switchTypeFace(fontType: Int) {
@@ -313,6 +314,7 @@ class FridayActivity : AppCompatActivity() {
         }
         tv_is_friday?.typeface = typeface
         tv_question?.typeface = typeface
+        tv_color_name?.typeface = typeface
     }
 
     private fun setDate() {
@@ -356,6 +358,7 @@ class FridayActivity : AppCompatActivity() {
                 textType -> changeTextColor(Color.parseColor(colorString))
                 else -> changeBubbleColor(Color.parseColor(colorString))
             }
+            tv_color_name?.text = Util.colorNameList[position]
         }
         val colorDialog = AlertDialog.Builder(this)
                 .setTitle("更多${titleString}颜色")
