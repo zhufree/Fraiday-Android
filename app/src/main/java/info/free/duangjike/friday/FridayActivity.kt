@@ -28,6 +28,7 @@ import android.widget.Toast.LENGTH_SHORT
 import info.free.duangjike.R
 import info.free.duangjike.ThemeUtil
 import info.free.duangjike.Util
+import info.free.duangjike.Util.clearOldPicture
 import io.reactivex.BackpressureStrategy
 import io.reactivex.Flowable
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -77,6 +78,7 @@ class FridayActivity : AppCompatActivity() {
         setDate()
         refreshTheme()
         setEvent()
+        clearOldPicture()
     }
 
     private fun setEvent() {
@@ -117,6 +119,7 @@ class FridayActivity : AppCompatActivity() {
                 val bitmap = Bitmap.createBitmap(cl_picture_container.width, cl_picture_container.height,
                         Bitmap.Config.RGB_565)
                 //使用Canvas，调用自定义view控件的onDraw方法，绘制图片
+                today.time = Date()
                 val canvas = Canvas(bitmap)
                 cl_picture_container?.draw(canvas)
                 emitter.onNext(bitmap)
@@ -132,6 +135,7 @@ class FridayActivity : AppCompatActivity() {
 
         tv_share?.setOnClickListener {
             Flowable.create<Bitmap>({ emitter ->
+                today.time = Date()
                 val bitmap = Bitmap.createBitmap(cl_picture_container.width, cl_picture_container.height,
                         Bitmap.Config.RGB_565)
                 //使用Canvas，调用自定义view控件的onDraw方法，绘制图片

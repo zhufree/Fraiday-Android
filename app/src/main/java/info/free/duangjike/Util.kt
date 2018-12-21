@@ -13,6 +13,7 @@ import java.io.BufferedOutputStream
 import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
+import java.text.SimpleDateFormat
 import java.util.*
 
 /**
@@ -140,7 +141,7 @@ object Util {
         val file = File("$filePath.jpg")
         try {
             val outputStream = BufferedOutputStream(FileOutputStream(file))
-            bitmap.compress(Bitmap.CompressFormat.JPEG, 80, outputStream)
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, outputStream)
             outputStream.flush()
             outputStream.close()
         } catch (e: IOException) {
@@ -165,7 +166,7 @@ object Util {
             url = contentResolver?.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values) //其实质是返回 Image.Meida.DATA中图片路径path的转变而成的uri
             val imageOut = contentResolver?.openOutputStream(url)
             imageOut?.use {
-                bitmap.compress(Bitmap.CompressFormat.PNG, 100, imageOut)
+                bitmap.compress(Bitmap.CompressFormat.JPEG, 100, imageOut)
             }
 
             val id = ContentUris.parseId(url)
@@ -179,7 +180,7 @@ object Util {
         return file
     }
 
-    fun getAlbumStorageDir(albumName: String): File {
+    private fun getAlbumStorageDir(albumName: String): File {
         // Get the directory for the user's public pictures directory.
         val file = File(Environment.getExternalStoragePublicDirectory(
                 Environment.DIRECTORY_PICTURES), albumName)
@@ -187,5 +188,22 @@ object Util {
             Log.e("jike", "Directory not created")
         }
         return file
+    }
+
+    /**
+     * 清除三天之前的图片
+     */
+    fun clearOldPicture() {
+        val format = SimpleDateFormat("yyyy-MM-dd-hh:mm:ss")
+        getAlbumStorageDir("DuangJike").list { dir, name ->
+            val pictureDate = format.parse(name)
+            Log.i("delete", pictureDate.toString())
+            if (Date().time - pictureDate.time > 3*24*3600*1000) {
+                Log.i("delete", "delete dir")
+                val fileToDel = File("${dir.path}${File.separator}$name")
+                fileToDel.delete()
+            }
+            true
+        }
     }
 }
