@@ -19,6 +19,7 @@ import android.os.Bundle
 import android.support.constraint.ConstraintLayout
 import android.support.v7.app.AppCompatActivity
 import android.view.LayoutInflater
+import android.view.View.*
 import android.view.ViewGroup.LayoutParams.MATCH_PARENT
 import android.view.Window
 import android.view.WindowManager
@@ -166,6 +167,32 @@ class FridayActivity : AppCompatActivity() {
         tv_more_bubble_color.setOnClickListener { showPickColorDialog(bubbleType) }
         tv_more_bg_color.setOnClickListener { showPickColorDialog(bgType) }
         tv_more_text_color.setOnClickListener { showPickColorDialog(textType) }
+
+        cl_picture_container.setOnClickListener {
+            if (cl_controller?.visibility == GONE) {
+                cl_controller?.visibility = VISIBLE
+            } else {
+                cl_controller?.visibility = GONE
+                tv_question?.visibility = VISIBLE
+                tv_today?.visibility = VISIBLE
+                tv_is_friday?.visibility = VISIBLE
+                tv_color_name?.visibility = VISIBLE
+                tv_triangle?.visibility = VISIBLE
+            }
+        }
+        tv_question.setOnClickListener {
+            tv_question?.visibility = if (tv_question?.visibility == GONE) VISIBLE else GONE
+            tv_triangle?.visibility = tv_question?.visibility?: GONE
+        }
+        tv_is_friday.setOnClickListener {
+            tv_is_friday?.visibility = if (tv_is_friday?.visibility == GONE) VISIBLE else GONE
+        }
+        tv_today.setOnClickListener {
+            tv_today?.visibility = if (tv_today?.visibility == GONE) VISIBLE else GONE
+        }
+        tv_color_name.setOnClickListener {
+            tv_color_name?.visibility = if (tv_color_name?.visibility == GONE) VISIBLE else GONE
+        }
     }
 
     private fun setBitmap(type: Int) {
@@ -227,7 +254,9 @@ class FridayActivity : AppCompatActivity() {
         cl_picture_container?.setBackgroundColor(FridayPreference.getBgColor())
         changeBubbleColor(FridayPreference.getBubbleColor())
         changeTextColor(FridayPreference.getTextColor())
+        tv_color_name?.text = FridayPreference.getColorName()
         switchTypeFace(FridayPreference.getFontType())
+        tv_color_name?.paint?.isFakeBoldText = true
         tv_is_friday?.paint?.isFakeBoldText = true
         tv_question?.paint?.isFakeBoldText = true
 
@@ -299,7 +328,6 @@ class FridayActivity : AppCompatActivity() {
         tv_question?.setTextColor(color)
         tv_is_friday?.setTextColor(color)
         tv_today?.setTextColor(color)
-        tv_color_name?.text = ""
         tv_color_name.setTextColor(color)
     }
 
@@ -354,11 +382,14 @@ class FridayActivity : AppCompatActivity() {
             val colorString = Util.colorList[position]
             when (type) {
                 bubbleType -> changeBubbleColor(Color.parseColor(colorString))
-                bgType -> changeBgColor(Color.parseColor(colorString))
+                bgType -> {
+                    changeBgColor(Color.parseColor(colorString))
+                    tv_color_name?.text = Util.colorNameList[position]
+                    FridayPreference.setColorName(Util.colorNameList[position])
+                }
                 textType -> changeTextColor(Color.parseColor(colorString))
                 else -> changeBubbleColor(Color.parseColor(colorString))
             }
-            tv_color_name?.text = Util.colorNameList[position]
         }
         val colorDialog = AlertDialog.Builder(this)
                 .setTitle("更多${titleString}颜色")

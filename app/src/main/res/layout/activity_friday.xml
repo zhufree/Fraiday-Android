@@ -23,8 +23,8 @@
             android:textSize="90sp"
             android:text="是"
             android:textStyle="bold"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_question"
+            app:layout_constraintBottom_toTopOf="@id/tv_today"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             android:textColor="#000"/>
@@ -33,6 +33,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:layout_constraintTop_toBottomOf="@id/tv_is_friday"
+            app:layout_constraintBottom_toTopOf="@+id/tv_color_name"
             android:layout_marginTop="20dp"
             android:text="Friday 2018.12.7"
             app:layout_constraintStart_toStartOf="parent"
@@ -43,6 +44,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:layout_constraintTop_toBottomOf="@id/tv_today"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             android:layout_marginTop="20dp"
@@ -55,6 +57,8 @@
             android:textSize="25sp"
             android:text="今天是周五吗？"
             android:textStyle="bold"
+            app:layout_constraintVertical_chainStyle="packed"
+            app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toTopOf="@id/tv_is_friday"
             android:layout_marginBottom="20dp"
             app:layout_constraintStart_toStartOf="parent"
@@ -76,6 +80,7 @@
 
 
     <android.support.constraint.ConstraintLayout
+        android:id="@+id/cl_controller"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -251,16 +256,6 @@
             android:padding="4dp"
             android:textColor="@color/white"
             android:background="@color/jikeBlue"/>
-
-        <ImageView
-            android:id="@+id/iv_hide_controller"
-            android:layout_width="20dp"
-            android:layout_height="10dp"
-            android:src="@drawable/ic_common_arrow_down"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:layout_marginTop="16dp"
-            android:layout_marginEnd="16dp"/>
 
         <TextView
             android:id="@+id/tv_bubble_color"
