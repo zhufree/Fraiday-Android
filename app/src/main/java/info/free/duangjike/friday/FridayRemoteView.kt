@@ -23,14 +23,14 @@ class FridayRemoteView(packageName: String) : RemoteViews(packageName, R.layout.
 
     private fun getWeekDayString(day: Int): String {
         return when (day) {
-            1 -> "日"
-            2 -> "一"
-            3 -> "二"
-            4 -> "三"
-            5 -> "四"
-            6 -> "五"
-            7 -> "六"
-            else -> "五"
+            1 -> "Sunday"
+            2 -> "Monday"
+            3 -> "Tuesday"
+            4 -> "Wednesday"
+            5 -> "Thursday"
+            6 -> "Friday"
+            7 -> "Saturday"
+            else -> "Friday"
         }
     }
 }
