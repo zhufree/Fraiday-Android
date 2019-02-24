@@ -196,12 +196,20 @@ object Util {
     fun clearOldPicture() {
         val format = SimpleDateFormat("yyyy-MM-dd-hh:mm:ss")
         getAlbumStorageDir("DuangJike").list { dir, name ->
-            val pictureDate = format.parse(name)
-            Log.i("delete", pictureDate.toString())
-            if (Date().time - pictureDate.time > 3*24*3600*1000) {
-                Log.i("delete", "delete dir")
-                val fileToDel = File("${dir.path}${File.separator}$name")
-                fileToDel.delete()
+            try {
+                if (name.contains("hwbk")) {
+                    val fileToDel = File("${dir.path}${File.separator}$name")
+                    fileToDel.delete()
+                } else {
+                    val pictureDate = format.parse(name)
+                    Log.i("delete", pictureDate.toString())
+                    if (Date().time - pictureDate.time > 3 * 24 * 3600 * 1000) {
+                        Log.i("delete", "delete dir")
+                        val fileToDel = File("${dir.path}${File.separator}$name")
+                        fileToDel.delete()
+                    }
+                }
+            } finally {
             }
             true
         }
