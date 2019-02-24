@@ -4,78 +4,82 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="info.free.duangjike.friday.FridayActivity"
+    android:background="@android:color/transparent"
     android:fitsSystemWindows="true"
-    android:background="@android:color/transparent">
+    tools:context="info.free.duangjike.friday.FridayActivity">
 
     <android.support.constraint.ConstraintLayout
         android:id="@+id/cl_picture_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent">
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
         <TextView
             android:id="@+id/tv_is_friday"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="90sp"
             android:text="是"
+            android:textColor="#000"
+            android:textSize="90sp"
             android:textStyle="bold"
-            app:layout_constraintTop_toBottomOf="@+id/tv_question"
             app:layout_constraintBottom_toTopOf="@id/tv_today"
-            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            android:textColor="#000"/>
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_question" />
+
         <TextView
             android:id="@+id/tv_today"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:layout_constraintTop_toBottomOf="@id/tv_is_friday"
-            app:layout_constraintBottom_toTopOf="@+id/tv_color_name"
             android:layout_marginTop="20dp"
             android:text="Friday 2018.12.7"
-            app:layout_constraintStart_toStartOf="parent"
+            android:textColor="#000"
+            app:layout_constraintBottom_toTopOf="@+id/tv_color_name"
             app:layout_constraintEnd_toEndOf="parent"
-            android:textColor="#000"/>
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_is_friday" />
+
         <TextView
             android:id="@+id/tv_color_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:layout_constraintTop_toBottomOf="@id/tv_today"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
             android:layout_marginTop="20dp"
-            android:alpha="0.6"/>
+            android:alpha="0.6"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_today" />
 
         <TextView
             android:id="@+id/tv_question"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="25sp"
-            android:text="今天是周五吗？"
-            android:textStyle="bold"
-            app:layout_constraintVertical_chainStyle="packed"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toTopOf="@id/tv_is_friday"
             android:layout_marginBottom="20dp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
             android:padding="20dp"
             android:paddingTop="15dp"
             android:paddingBottom="15dp"
-            android:textColor="#000"/>
+            android:text="今天是周五吗？"
+            android:textColor="#000"
+            android:textSize="25sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toTopOf="@id/tv_is_friday"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_chainStyle="packed" />
+
         <info.free.duangjike.friday.TriangleView
             android:id="@+id/tv_triangle"
             android:layout_width="10dp"
             android:layout_height="6dp"
-            app:trv_direction="bottom"
-            app:trv_color="@color/white"
-            app:layout_constraintTop_toBottomOf="@id/tv_question"
+            app:layout_constraintEnd_toEndOf="@id/tv_question"
             app:layout_constraintStart_toStartOf="@id/tv_question"
-            app:layout_constraintEnd_toEndOf="@id/tv_question"/>
+            app:layout_constraintTop_toBottomOf="@id/tv_question"
+            app:trv_color="@color/white"
+            app:trv_direction="bottom" />
     </android.support.constraint.ConstraintLayout>
 
 
@@ -83,330 +87,432 @@
         android:id="@+id/cl_controller"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:alpha="0.5"
         android:background="@android:color/transparent"
-        android:alpha="0.5">
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
 
         <TextView
             android:id="@+id/tv_go_friday"
             android:layout_width="0dp"
             android:layout_height="40dp"
-            android:text="周五圈子"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="16dp"
+            android:background="@color/jikeBlue"
+            android:gravity="center"
             android:paddingStart="8dp"
             android:paddingEnd="8dp"
-            android:textSize="16sp"
-            android:gravity="center"
-            android:layout_marginStart="16dp"
-            android:layout_marginEnd="8dp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/tv_save"
-            android:layout_marginTop="8dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            android:layout_marginBottom="16dp"
+            android:text="周五圈子"
             android:textColor="@color/white"
-            android:background="@color/jikeBlue"
-            />
+            android:textSize="16sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/tv_save"
+            app:layout_constraintStart_toStartOf="parent" />
+
         <TextView
             android:id="@+id/tv_save"
             android:layout_width="0dp"
             android:layout_height="40dp"
-            android:text="保存图片"
-            android:textSize="16sp"
-            android:gravity="center"
-            android:layout_marginEnd="16dp"
             android:layout_marginStart="8dp"
-            app:layout_constraintStart_toEndOf="@id/tv_go_friday"
-            app:layout_constraintEnd_toEndOf="parent"
             android:layout_marginTop="8dp"
-            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginEnd="16dp"
             android:layout_marginBottom="16dp"
-            android:textColor="@color/white"
             android:background="@color/jikeBlue"
-            />
+            android:gravity="center"
+            android:text="保存图片"
+            android:textColor="@color/white"
+            android:textSize="16sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/tv_go_friday" />
+
         <TextView
             android:id="@+id/tv_set_wallpaper"
             android:layout_width="0dp"
             android:layout_height="40dp"
-            android:text="设为壁纸"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="8dp"
+            android:background="@color/jikeBlue"
+            android:gravity="center"
             android:paddingStart="8dp"
             android:paddingEnd="8dp"
-            android:textSize="16sp"
-            android:gravity="center"
-            android:layout_marginStart="16dp"
-            android:layout_marginEnd="8dp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/tv_share"
-            android:layout_marginTop="10dp"
-            app:layout_constraintBottom_toTopOf="@id/tv_go_friday"
-            android:layout_marginBottom="8dp"
+            android:text="设为壁纸"
             android:textColor="@color/white"
-            android:background="@color/jikeBlue"
-            />
+            android:textSize="16sp"
+            app:layout_constraintBottom_toTopOf="@id/tv_go_friday"
+            app:layout_constraintEnd_toStartOf="@+id/tv_share"
+            app:layout_constraintStart_toStartOf="parent" />
+
         <TextView
             android:id="@+id/tv_share"
             android:layout_width="0dp"
             android:layout_height="40dp"
-            android:text="分享到..."
-            android:textSize="16sp"
-            android:gravity="center"
-            android:layout_marginEnd="16dp"
             android:layout_marginStart="8dp"
-            app:layout_constraintStart_toEndOf="@id/tv_set_wallpaper"
-            app:layout_constraintEnd_toEndOf="parent"
             android:layout_marginTop="10dp"
-            app:layout_constraintBottom_toTopOf="@id/tv_go_friday"
+            android:layout_marginEnd="16dp"
             android:layout_marginBottom="8dp"
-            android:textColor="@color/white"
             android:background="@color/jikeBlue"
-            />
+            android:gravity="center"
+            android:text="分享到..."
+            android:textColor="@color/white"
+            android:textSize="16sp"
+            app:layout_constraintBottom_toTopOf="@id/tv_go_friday"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/tv_set_wallpaper" />
 
         <TextView
             android:id="@+id/tv_size_square"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="正方形"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="16dp"
+            android:background="@color/jikeBlue"
             android:gravity="center"
-            android:textSize="16sp"
             android:padding="4dp"
             android:paddingStart="8dp"
             android:paddingEnd="8dp"
-            app:layout_constraintBottom_toTopOf="@id/tv_share"
-            android:layout_marginBottom="16dp"
-            app:layout_constraintStart_toStartOf="parent"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="16dp"
+            android:text="正方形"
             android:textColor="@color/white"
-            android:background="@color/jikeBlue"/>
+            android:textSize="16sp"
+            app:layout_constraintBottom_toTopOf="@id/tv_share"
+            app:layout_constraintStart_toStartOf="parent" />
+
         <TextView
             android:id="@+id/tv_size_full"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="全屏幕"
+            android:layout_marginStart="16dp"
+            android:background="@color/jikeBlue"
             android:gravity="center"
-            android:textSize="16sp"
             android:padding="4dp"
             android:paddingStart="8dp"
             android:paddingEnd="8dp"
-            app:layout_constraintTop_toTopOf="@id/tv_size_square"
+            android:text="全屏幕"
+            android:textColor="@color/white"
+            android:textSize="16sp"
             app:layout_constraintBottom_toBottomOf="@id/tv_size_square"
             app:layout_constraintStart_toEndOf="@id/tv_size_square"
-            android:layout_marginStart="16dp"
-            android:textColor="@color/white"
-            android:background="@color/jikeBlue"/>
-        
+            app:layout_constraintTop_toTopOf="@id/tv_size_square" />
+
         <TextView
-            android:id="@+id/tv_face_type_shu_song"
+            android:id="@+id/tv_switch_en"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:background="@color/jikeBlue"
+            android:gravity="center"
+            android:padding="4dp"
+            android:text="英"
+            android:textColor="@color/white"
+            app:layout_constraintBottom_toBottomOf="@id/tv_size_square"
             app:layout_constraintDimensionRatio="1:1"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintBottom_toTopOf="@id/tv_size_square"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/tv_size_square" />
+        <TextView
+            android:id="@+id/tv_switch_cn"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:background="@color/jikeBlue"
+            android:gravity="center"
+            android:padding="4dp"
+            android:text="中"
+            android:textColor="@color/white"
+            app:layout_constraintBottom_toBottomOf="@id/tv_size_square"
+            app:layout_constraintDimensionRatio="1:1"
+            app:layout_constraintEnd_toStartOf="@id/tv_switch_en"
+            app:layout_constraintTop_toTopOf="@id/tv_size_square" />
+
+        <ScrollView
+            android:id="@+id/sv_font_cn_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"
-            android:layout_marginStart="16dp"
-            android:text="书"
-            android:gravity="center"
-            android:textSize="16sp"
-            android:padding="4dp"
-            android:textColor="@color/white"
-            android:background="@color/jikeBlue"/>
-        <TextView
-            android:id="@+id/tv_face_type_fang_song"
-            android:layout_width="0dp"
+            app:layout_constraintBottom_toTopOf="@id/tv_size_square">
+            <android.support.constraint.ConstraintLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <TextView
+                    android:id="@+id/tv_face_type_shu_song"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:background="@color/jikeBlue"
+                    android:gravity="center"
+                    android:padding="4dp"
+                    android:text="书"
+                    android:textColor="@color/white"
+                    android:textSize="16sp"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintDimensionRatio="1:1"
+                    app:layout_constraintStart_toStartOf="parent" />
+
+                <TextView
+                    android:id="@+id/tv_face_type_fang_song"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:background="@color/jikeBlue"
+                    android:gravity="center"
+                    android:padding="4dp"
+                    android:text="仿"
+                    android:textColor="@color/white"
+                    android:textSize="16sp"
+                    app:layout_constraintBottom_toBottomOf="@id/tv_face_type_shu_song"
+                    app:layout_constraintDimensionRatio="1:1"
+                    app:layout_constraintStart_toEndOf="@id/tv_face_type_shu_song"
+                    app:layout_constraintTop_toTopOf="@id/tv_face_type_shu_song" />
+
+                <TextView
+                    android:id="@+id/tv_face_type_kai"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:background="@color/jikeBlue"
+                    android:gravity="center"
+                    android:padding="4dp"
+                    android:text="楷"
+                    android:textColor="@color/white"
+                    android:textSize="16sp"
+                    app:layout_constraintBottom_toBottomOf="@id/tv_face_type_fang_song"
+                    app:layout_constraintDimensionRatio="1:1"
+                    app:layout_constraintStart_toEndOf="@id/tv_face_type_fang_song"
+                    app:layout_constraintTop_toTopOf="@id/tv_face_type_fang_song" />
+
+                <TextView
+                    android:id="@+id/tv_face_type_hei"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:background="@color/jikeBlue"
+                    android:gravity="center"
+                    android:padding="4dp"
+                    android:text="黑"
+                    android:textColor="@color/white"
+                    android:textSize="16sp"
+                    app:layout_constraintBottom_toBottomOf="@id/tv_face_type_kai"
+                    app:layout_constraintDimensionRatio="1:1"
+                    app:layout_constraintStart_toEndOf="@id/tv_face_type_kai"
+                    app:layout_constraintTop_toTopOf="@id/tv_face_type_kai" />
+            </android.support.constraint.ConstraintLayout>
+        </ScrollView>
+
+        <ScrollView
+            android:id="@+id/sv_font_en_container"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:layout_constraintDimensionRatio="1:1"
-            app:layout_constraintStart_toEndOf="@id/tv_face_type_shu_song"
-            app:layout_constraintTop_toTopOf="@id/tv_face_type_shu_song"
-            app:layout_constraintBottom_toBottomOf="@id/tv_face_type_shu_song"
-            android:layout_marginStart="16dp"
-            android:text="仿"
-            android:gravity="center"
-            android:textSize="16sp"
-            android:padding="4dp"
-            android:textColor="@color/white"
-            android:background="@color/jikeBlue"/>
-        <TextView
-            android:id="@+id/tv_face_type_kai"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            app:layout_constraintDimensionRatio="1:1"
-            app:layout_constraintStart_toEndOf="@id/tv_face_type_fang_song"
-            app:layout_constraintTop_toTopOf="@id/tv_face_type_fang_song"
-            app:layout_constraintBottom_toBottomOf="@id/tv_face_type_fang_song"
-            android:layout_marginStart="16dp"
-            android:text="楷"
-            android:gravity="center"
-            android:textSize="16sp"
-            android:padding="4dp"
-            android:textColor="@color/white"
-            android:background="@color/jikeBlue"/>
-        <TextView
-            android:id="@+id/tv_face_type_hei"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            app:layout_constraintDimensionRatio="1:1"
-            app:layout_constraintStart_toEndOf="@id/tv_face_type_kai"
-            app:layout_constraintTop_toTopOf="@id/tv_face_type_kai"
-            app:layout_constraintBottom_toBottomOf="@id/tv_face_type_kai"
-            android:layout_marginStart="16dp"
-            android:text="黑"
-            android:gravity="center"
-            android:textSize="16sp"
-            android:padding="4dp"
-            android:textColor="@color/white"
-            android:background="@color/jikeBlue"/>
+            android:layout_marginBottom="16dp"
+            app:layout_constraintBottom_toTopOf="@id/tv_size_square">
+            <android.support.constraint.ConstraintLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <TextView
+                    android:id="@+id/tv_face_type_groteskia"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:background="@color/jikeBlue"
+                    android:gravity="center"
+                    android:padding="4dp"
+                    android:text="G"
+                    android:textColor="@color/white"
+                    android:textSize="16sp"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintDimensionRatio="1:1"
+                    app:layout_constraintStart_toStartOf="parent" />
+
+                <TextView
+                    android:id="@+id/tv_face_type_brig"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:background="@color/jikeBlue"
+                    android:gravity="center"
+                    android:padding="4dp"
+                    android:text="B"
+                    android:textColor="@color/white"
+                    android:textSize="16sp"
+                    app:layout_constraintBottom_toBottomOf="@id/tv_face_type_groteskia"
+                    app:layout_constraintDimensionRatio="1:1"
+                    app:layout_constraintStart_toEndOf="@id/tv_face_type_groteskia"
+                    app:layout_constraintTop_toTopOf="@id/tv_face_type_groteskia" />
+
+            </android.support.constraint.ConstraintLayout>
+        </ScrollView>
+
 
         <TextView
             android:id="@+id/tv_bubble_color"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:layout_constraintStart_toStartOf="parent"
             android:layout_marginStart="16dp"
+            android:layout_marginBottom="16dp"
             android:text="气泡颜色"
-            app:layout_constraintBottom_toTopOf="@id/tv_face_type_fang_song"
-            android:layout_marginBottom="16dp"/>
+            app:layout_constraintBottom_toTopOf="@id/sv_font_cn_container"
+            app:layout_constraintStart_toStartOf="parent" />
 
         <View
             android:id="@+id/v_bubble_color_white"
             android:layout_width="20dp"
             android:layout_height="20dp"
+            android:layout_marginStart="16dp"
             android:background="@color/jikeWhite"
-            app:layout_constraintTop_toTopOf="@id/tv_bubble_color"
             app:layout_constraintBottom_toBottomOf="@id/tv_bubble_color"
             app:layout_constraintStart_toEndOf="@id/tv_bubble_color"
-            android:layout_marginStart="16dp"/>
+            app:layout_constraintTop_toTopOf="@id/tv_bubble_color" />
+
         <View
             android:id="@+id/v_bubble_color_yellow"
             android:layout_width="20dp"
             android:layout_height="20dp"
-            app:layout_constraintTop_toTopOf="@id/tv_bubble_color"
+            android:layout_marginStart="16dp"
             app:layout_constraintBottom_toBottomOf="@id/tv_bubble_color"
             app:layout_constraintStart_toEndOf="@id/v_bubble_color_white"
-            android:layout_marginStart="16dp"/>
+            app:layout_constraintTop_toTopOf="@id/tv_bubble_color" />
+
         <View
             android:id="@+id/v_bubble_color_blue"
             android:layout_width="20dp"
             android:layout_height="20dp"
-            app:layout_constraintTop_toTopOf="@id/tv_bubble_color"
+            android:layout_marginStart="16dp"
             app:layout_constraintBottom_toBottomOf="@id/tv_bubble_color"
             app:layout_constraintStart_toEndOf="@id/v_bubble_color_yellow"
-            android:layout_marginStart="16dp"/>
+            app:layout_constraintTop_toTopOf="@id/tv_bubble_color" />
 
         <TextView
             android:id="@+id/tv_more_bubble_color"
             android:layout_width="wrap_content"
             android:layout_height="0dp"
-            app:layout_constraintTop_toTopOf="@id/tv_bubble_color"
+            android:layout_marginStart="16dp"
+            android:text="更多颜色"
             app:layout_constraintBottom_toBottomOf="@id/tv_bubble_color"
             app:layout_constraintStart_toEndOf="@id/v_bubble_color_blue"
-            android:text="更多颜色"
-            android:layout_marginStart="16dp" />
+            app:layout_constraintTop_toTopOf="@id/tv_bubble_color" />
+
         <TextView
             android:id="@+id/tv_custom_bubble_color"
             android:layout_width="50dp"
             android:layout_height="0dp"
-            app:layout_constraintTop_toTopOf="@id/tv_more_bubble_color"
+            android:layout_marginStart="16dp"
+            android:text="自定义"
             app:layout_constraintBottom_toBottomOf="@id/tv_more_bubble_color"
             app:layout_constraintStart_toEndOf="@id/tv_more_bubble_color"
-            android:text="自定义"
-            android:layout_marginStart="16dp" />
+            app:layout_constraintTop_toTopOf="@id/tv_more_bubble_color" />
 
         <TextView
             android:id="@+id/tv_bg_color"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:layout_constraintStart_toStartOf="parent"
             android:layout_marginStart="16dp"
+            android:layout_marginBottom="16dp"
             android:text="背景颜色"
             app:layout_constraintBottom_toTopOf="@id/tv_bubble_color"
-            android:layout_marginBottom="16dp"/>
+            app:layout_constraintStart_toStartOf="parent" />
+
         <View
             android:id="@+id/v_bg_color_white"
             android:layout_width="20dp"
             android:layout_height="20dp"
-            app:layout_constraintTop_toTopOf="@id/tv_bg_color"
+            android:layout_marginStart="16dp"
             app:layout_constraintBottom_toBottomOf="@id/tv_bg_color"
             app:layout_constraintStart_toEndOf="@id/tv_bg_color"
-            android:layout_marginStart="16dp"/>
+            app:layout_constraintTop_toTopOf="@id/tv_bg_color" />
+
         <View
             android:id="@+id/v_bg_color_yellow"
             android:layout_width="20dp"
             android:layout_height="20dp"
-            app:layout_constraintTop_toTopOf="@id/tv_bg_color"
+            android:layout_marginStart="16dp"
             app:layout_constraintBottom_toBottomOf="@id/tv_bg_color"
             app:layout_constraintStart_toEndOf="@id/v_bg_color_white"
-            android:layout_marginStart="16dp"/>
+            app:layout_constraintTop_toTopOf="@id/tv_bg_color" />
+
         <View
             android:id="@+id/v_bg_color_blue"
             android:layout_width="20dp"
             android:layout_height="20dp"
-            app:layout_constraintTop_toTopOf="@id/tv_bg_color"
+            android:layout_marginStart="16dp"
             app:layout_constraintBottom_toBottomOf="@id/tv_bg_color"
             app:layout_constraintStart_toEndOf="@id/v_bg_color_yellow"
-            android:layout_marginStart="16dp"/>
+            app:layout_constraintTop_toTopOf="@id/tv_bg_color" />
 
         <TextView
             android:id="@+id/tv_more_bg_color"
             android:layout_width="wrap_content"
             android:layout_height="0dp"
+            android:layout_marginStart="16dp"
             android:text="更多颜色"
-            app:layout_constraintTop_toTopOf="@id/tv_bg_color"
             app:layout_constraintBottom_toBottomOf="@id/tv_bg_color"
             app:layout_constraintStart_toEndOf="@id/v_bg_color_blue"
-            android:layout_marginStart="16dp" />
+            app:layout_constraintTop_toTopOf="@id/tv_bg_color" />
+
         <TextView
             android:id="@+id/tv_custom_bg_color"
             android:layout_width="50dp"
             android:layout_height="0dp"
+            android:layout_marginStart="16dp"
             android:text="自定义"
-            app:layout_constraintTop_toTopOf="@id/tv_more_bg_color"
             app:layout_constraintBottom_toBottomOf="@id/tv_more_bg_color"
             app:layout_constraintStart_toEndOf="@id/tv_more_bg_color"
-            android:layout_marginStart="16dp" />
+            app:layout_constraintTop_toTopOf="@id/tv_more_bg_color" />
+
         <TextView
             android:id="@+id/tv_text_color"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:layout_constraintStart_toStartOf="parent"
             android:layout_marginStart="16dp"
+            android:layout_marginBottom="16dp"
             android:text="字体颜色"
             app:layout_constraintBottom_toTopOf="@id/tv_bg_color"
-            android:layout_marginBottom="16dp"/>
+            app:layout_constraintStart_toStartOf="parent" />
+
         <View
             android:id="@+id/v_text_color_white"
             android:layout_width="20dp"
             android:layout_height="20dp"
-            app:layout_constraintTop_toTopOf="@id/tv_text_color"
+            android:layout_marginStart="16dp"
             app:layout_constraintBottom_toBottomOf="@id/tv_text_color"
             app:layout_constraintStart_toEndOf="@id/tv_text_color"
-            android:layout_marginStart="16dp"/>
+            app:layout_constraintTop_toTopOf="@id/tv_text_color" />
+
         <View
             android:id="@+id/v_text_color_black"
             android:layout_width="20dp"
             android:layout_height="20dp"
-            app:layout_constraintTop_toTopOf="@id/tv_text_color"
+            android:layout_marginStart="16dp"
             app:layout_constraintBottom_toBottomOf="@id/tv_text_color"
             app:layout_constraintStart_toEndOf="@id/v_text_color_white"
-            android:layout_marginStart="16dp"/>
+            app:layout_constraintTop_toTopOf="@id/tv_text_color" />
+
         <TextView
             android:id="@+id/tv_more_text_color"
             android:layout_width="wrap_content"
             android:layout_height="0dp"
+            android:layout_marginStart="16dp"
             android:text="更多颜色"
-            app:layout_constraintTop_toTopOf="@id/tv_text_color"
             app:layout_constraintBottom_toBottomOf="@id/tv_text_color"
             app:layout_constraintStart_toEndOf="@id/v_text_color_black"
-            android:layout_marginStart="16dp" />
+            app:layout_constraintTop_toTopOf="@id/tv_text_color" />
+
         <TextView
             android:id="@+id/tv_custom_text_color"
             android:layout_width="50dp"
             android:layout_height="0dp"
+            android:layout_marginStart="16dp"
             android:text="自定义"
-            app:layout_constraintTop_toTopOf="@id/tv_more_text_color"
             app:layout_constraintBottom_toBottomOf="@id/tv_more_text_color"
             app:layout_constraintStart_toEndOf="@id/tv_more_text_color"
-            android:layout_marginStart="16dp" />
+            app:layout_constraintTop_toTopOf="@id/tv_more_text_color" />
 
     </android.support.constraint.ConstraintLayout>
 </android.support.constraint.ConstraintLayout>

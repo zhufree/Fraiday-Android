@@ -55,6 +55,9 @@ class FridayActivity : AppCompatActivity() {
 
     private val wallType = 0
 
+    private val cnType = 0
+    private val enType = 1
+
     private var white: Int = -1
     private var blue: Int = -1
     private var yellow: Int = -1
@@ -109,8 +112,8 @@ class FridayActivity : AppCompatActivity() {
             val pkgInfoList = packageManager.getInstalledApplications(PackageManager.GET_META_DATA)
             val hasJike = pkgInfoList.filter { it.processName == jikePackageName }.isNotEmpty()
             val jikeIntent = Intent(ACTION_VIEW)
-                jikeIntent.data = Uri.parse(if (hasJike) fridayLink else downJikeLink)
-                startActivity(jikeIntent)
+            jikeIntent.data = Uri.parse(if (hasJike) fridayLink else downJikeLink)
+            startActivity(jikeIntent)
         }
         tv_set_wallpaper?.setOnClickListener { setBitmap(wallType) }
 
@@ -153,8 +156,12 @@ class FridayActivity : AppCompatActivity() {
                         shareIntent.putExtra(Intent.EXTRA_STREAM, uri)
                         this.startActivity(Intent.createChooser(shareIntent, "分享到..."))
                     }
-
         }
+
+        tv_switch_en?.setOnClickListener {
+            switchLanguage(enType)
+        }
+        tv_switch_cn?.setOnClickListener { switchLanguage(cnType) }
 
         v_bubble_color_blue?.setOnClickListener { changeBubbleColor(blue) }
         v_bubble_color_white?.setOnClickListener { changeBubbleColor(white) }
@@ -186,7 +193,7 @@ class FridayActivity : AppCompatActivity() {
         }
         tv_question.setOnClickListener {
             tv_question?.visibility = if (tv_question?.visibility == GONE) VISIBLE else GONE
-            tv_triangle?.visibility = tv_question?.visibility?: GONE
+            tv_triangle?.visibility = tv_question?.visibility ?: GONE
         }
         tv_is_friday.setOnClickListener {
             tv_is_friday?.visibility = if (tv_is_friday?.visibility == GONE) VISIBLE else GONE
@@ -304,6 +311,14 @@ class FridayActivity : AppCompatActivity() {
             tv_go_friday?.background = ThemeUtil.customShape(blue, blue, 0,
                     tv_go_friday.height.toFloat() / 2)
         }
+        tv_switch_en?.post {
+            tv_switch_en?.background = ThemeUtil.customShape(blue, blue, 0,
+                    tv_switch_en.height.toFloat() / 2)
+        }
+        tv_switch_cn?.post {
+            tv_switch_cn?.background = ThemeUtil.customShape(blue, blue, 0,
+                    tv_switch_en.height.toFloat() / 2)
+        }
         v_bubble_color_white.background = ThemeUtil.customShape(white, white, 0, ThemeUtil.dip2px(10))
         v_bubble_color_yellow.background = ThemeUtil.customShape(yellow, yellow, 0, ThemeUtil.dip2px(10))
         v_bubble_color_blue.background = ThemeUtil.customShape(blue, blue, 0, ThemeUtil.dip2px(10))
@@ -326,7 +341,20 @@ class FridayActivity : AppCompatActivity() {
     private fun changeBgColor(color: Int) {
         FridayPreference.setBgColor(color)
         cl_picture_container.setBackgroundColor(color)
+        if (color == blue) {
+            tv_color_name?.text = "即刻蓝"
+        }
+        if (color == yellow) {
+            tv_color_name?.text = "即刻黄"
+        }
+        if (color == white) {
+            tv_color_name?.text = "白"
+        }
+        if (color == black) {
+            tv_color_name?.text = "黑"
+        }
     }
+
     private fun changeTextColor(color: Int) {
         FridayPreference.setTextColor(color)
         tv_question?.setTextColor(color)
@@ -346,7 +374,15 @@ class FridayActivity : AppCompatActivity() {
         }
         tv_is_friday?.typeface = typeface
         tv_question?.typeface = typeface
-        tv_color_name?.typeface = typeface
+    }
+
+    private fun switchLanguage(langType: Int) {
+        tv_question?.text = if (langType == enType) "Is today Friday?" else "今天是周五吗？"
+        if (today.get(DAY_OF_WEEK) == 6) {
+            tv_is_friday.text = if (langType == enType) "YES!" else "是"
+        } else {
+            tv_is_friday.text =  if (langType == enType) "NO" else "是"
+        }
     }
 
     private fun setDate() {
@@ -399,7 +435,7 @@ class FridayActivity : AppCompatActivity() {
                 .setTitle("更多${titleString}颜色")
                 .setView(inputView)
                 .setPositiveButton("OK") { _, _ -> }
-                .setNegativeButton("Cancel") { _, _ ->  }
+                .setNegativeButton("Cancel") { _, _ -> }
                 .create()
         colorDialog.show()
     }
