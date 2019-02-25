@@ -2,6 +2,7 @@ package info.free.duangjike
 
 import android.content.ContentUris
 import android.content.ContentValues
+import android.content.Context
 import android.content.Intent.FLAG_GRANT_WRITE_URI_PERMISSION
 import android.graphics.Bitmap
 import android.net.Uri
@@ -180,7 +181,7 @@ object Util {
         return file
     }
 
-    private fun getAlbumStorageDir(albumName: String): File {
+    fun getAlbumStorageDir(albumName: String): File {
         // Get the directory for the user's public pictures directory.
         val file = File(Environment.getExternalStoragePublicDirectory(
                 Environment.DIRECTORY_PICTURES), albumName)
@@ -213,5 +214,13 @@ object Util {
             }
             true
         }
+    }
+
+    /**
+     * 根据手机的分辨率从 dp 的单位 转成为 px(像素)
+     */
+    fun dp2px(dpValue: Int, context: Context = DuangApplication.context): Int {
+        val scale = context.resources.displayMetrics.density
+        return (dpValue * scale + 0.5f).toInt()
     }
 }
