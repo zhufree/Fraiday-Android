@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Is today friday?</string>
+    <string name="copyright_title">Copyright</string>
+    <string name="app_idea">The app come from an app named Jike APP in China,which has a group [Is today Friday?](You can visit it from the button at bottom-left.)</string>
+    <string name="logo_idea">The logo of this app come from a text style of Jike APP, and the picture is generated from a website created by a Jiker.</string>
+    <string name="colors">Color</string>
+    <string name="main_color">Main color: white(#F8F8F8)/blue(#01A9F4)/yellow(#FFE411)/black(#404040) was get from Jike website.</string>
+    <string name="more_color_from">526 kinds of color in [more color] were got from a website named [中国色](the colors of China),you can visit it below.The color values at this website comes from a paper：《色谱》中科院科技情报编委会名词室.科学出版社,1957.</string>
+    <string name="fonts">Fonts</string>
+    <string name="cn_fonts">Chinese fonts：ShuSong、FangSong、KaiTi、HeiTi，are free fonts by FangZheng font library.</string>
+    <string name="en_fonts">English fonts: AmaticSC/Courgette/IndieFlower/Kalam/Laila/Molle
+    /NovaFlat/PermanentMarker/PlayfairDisplay/Teko/YanoneKaffeesatz(by order), are all free fonts by google fonts website.</string>
+
+
+    <string name="text_color">Text Color</string>
+    <string name="bg_color">Bg Color</string>
+    <string name="bubble_color">Bubble Color</string>
+    <string name="square">Square</string>
+    <string name="full_screen">Full</string>
+    <string name="cn">CN</string>
+    <string name="en">EN</string>
+    <string name="set_wallpaper">Set As Aallpaper</string>
+    <string name="share">Share To</string>
+    <string name="friday_group">Group Friday</string>
+    <string name="save_picture">Save Picture</string>
+
+
+    <string name="is_today_friday">Is today Friday?</string>
+    <string name="yes">YES!</string>
+    <string name="no">NO</string>
+    <string name="more_color">More Color</string>
+    <string name="custom_color">Custom Color</string>
+</resources>

@@ -14,7 +14,9 @@ object FridayPreference {
     private const val BUBBLE_COLOR = "bubble_color"
     private const val BG_COLOR = "bg_color"
     private const val TEXT_COLOR = "text_color"
-    private const val FONT_TYPE = "font_type"
+    private const val LANG = "language"
+    private const val CN_FONT_TYPE = "cn_font_type"
+    private const val EN_FONT_TYPE = "en_font_type"
     private const val COLOR_NAME = "color_name"
 
     fun setBubbleColor(color: Int) {
@@ -26,8 +28,15 @@ object FridayPreference {
     fun setTextColor(color: Int) {
         setIntValue(FRIDAY_PREF, TEXT_COLOR, color)
     }
-    fun setFontType(font: Int) {
-        setIntValue(FRIDAY_PREF, FONT_TYPE, font)
+
+    fun setLang(lang: Int) {
+        setIntValue(FRIDAY_PREF, LANG, lang)
+    }
+    fun setCnFontType(font: Int) {
+        setIntValue(FRIDAY_PREF, CN_FONT_TYPE, font)
+    }
+    fun setEnFontType(font: String) {
+        setStringValue(FRIDAY_PREF, EN_FONT_TYPE, font)
     }
     fun getBubbleColor(): Int {
         return getIntValue(FRIDAY_PREF, BUBBLE_COLOR)
@@ -38,8 +47,14 @@ object FridayPreference {
     fun getTextColor(): Int {
         return getIntValue(FRIDAY_PREF, TEXT_COLOR)
     }
-    fun getFontType(): Int {
-        return getIntValue(FRIDAY_PREF, FONT_TYPE)
+    fun getLang(): Int {
+        return getIntValue(FRIDAY_PREF, LANG)
+    }
+    fun getCnFontType(): Int {
+        return getIntValue(FRIDAY_PREF, CN_FONT_TYPE)
+    }
+    fun getEnFontType(): String {
+        return getStringValue(FRIDAY_PREF, EN_FONT_TYPE)
     }
     fun getColorName(): String {
         return getStringValue(FRIDAY_PREF, COLOR_NAME)

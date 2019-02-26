@@ -1,10 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">今天是周五吗？</string>
     <string name="copyright_title">版权声明</string>
     <string name="app_idea">本app的创意来源于即刻APP【今天是周五吗？】圈子（在主页面点击左下角按钮可以直接跳转）</string>
     <string name="logo_idea">本app的LOGO风格来源于即刻APP的字体风格，由即友开发的网站生成。</string>
     <string name="colors">颜色</string>
-    <string name="main_color">主颜色白色（#F8F8F8）/蓝色（#01A9F4）/黄色（#FFE411）/黑色（#404040）         取自即刻web端网站（颜色值不一定准确）</string>
+    <string name="main_color">主颜色白色（#F8F8F8）/蓝色（#01A9F4）/黄色（#FFE411）/黑色（#404040）
+        取自即刻web端网站（颜色值不一定准确）</string>
     <string name="more_color_from">更多颜色中的526种颜色值取自中国色网站（网址见下），该网站的颜色值源自
         《色谱》中科院科技情报编委会名词室.科学出版社,1957.</string>
     <string name="fonts">字体</string>
@@ -16,8 +18,6 @@
     <string name="text_color">字体颜色</string>
     <string name="bg_color">背景颜色</string>
     <string name="bubble_color">气泡颜色</string>
-    <string name="more_color">更多颜色</string>
-    <string name="custom_color">自定义颜色</string>
     <string name="square">正方形</string>
     <string name="full_screen">全屏幕</string>
     <string name="cn">中</string>
@@ -31,5 +31,6 @@
     <string name="is_today_friday">今天是周五吗？</string>
     <string name="yes">是</string>
     <string name="no">不是</string>
-
+    <string name="more_color">更多颜色</string>
+    <string name="custom_color">自定义颜色</string>
 </resources>

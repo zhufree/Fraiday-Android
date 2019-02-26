@@ -18,8 +18,8 @@ import android.net.Uri
 import android.os.Bundle
 import android.support.constraint.ConstraintLayout
 import android.support.constraint.ConstraintLayout.LayoutParams.MATCH_CONSTRAINT
-import android.support.constraint.ConstraintLayout.LayoutParams.WRAP_CONTENT
 import android.support.v7.app.AppCompatActivity
+import android.util.Log
 import android.view.*
 import android.view.Gravity.CENTER
 import android.view.View.*
@@ -59,6 +59,7 @@ class FridayActivity : AppCompatActivity() {
 
     private val cnType = 0
     private val enType = 1
+    private val currentLang = FridayPreference.getLang()
 
     private var white: Int = -1
     private var blue: Int = -1
@@ -83,6 +84,7 @@ class FridayActivity : AppCompatActivity() {
         initData()
         setDate()
         refreshTheme()
+        switchLanguage(FridayPreference.getLang())
         setEvent()
         clearOldPicture()
     }
@@ -99,11 +101,8 @@ class FridayActivity : AppCompatActivity() {
             tvParam.bottomToBottom = 0
             tvParam.startToStart = 0
             tvParam.dimensionRatio = "1:1"
-            tvParam.marginStart = Util.dp2px(30*i)
-            tvFont.post {
-                tvFont.background = ThemeUtil.customShape(blue, blue, 0,
-                        tv_face_type_kai.height.toFloat() / 2)
-            }
+            tvParam.marginStart = Util.dp2px(30 * i)
+            setBg(tvFont)
             cl_font_en.addView(tvFont, tvParam)
             tvFont.setOnClickListener {
                 switchEnTypeFace(enFontList[i])
@@ -113,13 +112,13 @@ class FridayActivity : AppCompatActivity() {
 
     private fun setEvent() {
         tv_face_type_shu_song?.setOnClickListener {
-            switchTypeFace(shuSongType)
+            switchCnTypeFace(shuSongType)
         }
         tv_face_type_fang_song?.setOnClickListener {
-            switchTypeFace(fangSongType)
+            switchCnTypeFace(fangSongType)
         }
-        tv_face_type_hei?.setOnClickListener { switchTypeFace(heiType) }
-        tv_face_type_kai?.setOnClickListener { switchTypeFace(kaiType) }
+        tv_face_type_hei?.setOnClickListener { switchCnTypeFace(heiType) }
+        tv_face_type_kai?.setOnClickListener { switchCnTypeFace(kaiType) }
 
         tv_size_square?.setOnClickListener {
             val containerLp = cl_picture_container.layoutParams as ConstraintLayout.LayoutParams
@@ -185,9 +184,7 @@ class FridayActivity : AppCompatActivity() {
                     }
         }
 
-        tv_switch_en?.setOnClickListener {
-            switchLanguage(enType)
-        }
+        tv_switch_en?.setOnClickListener { switchLanguage(enType) }
         tv_switch_cn?.setOnClickListener { switchLanguage(cnType) }
 
         v_bubble_color_blue?.setOnClickListener { changeBubbleColor(blue) }
@@ -237,6 +234,7 @@ class FridayActivity : AppCompatActivity() {
         }
 
         ib_donate?.setOnClickListener { startActivity(Intent(this, AboutMeActivity::class.java)) }
+        ib_copyright?.setOnClickListener { startActivity(Intent(this, CopyrightActivity::class.java)) }
     }
 
     private fun setBitmap(type: Int) {
@@ -299,7 +297,12 @@ class FridayActivity : AppCompatActivity() {
         changeBubbleColor(FridayPreference.getBubbleColor())
         changeTextColor(FridayPreference.getTextColor())
         tv_color_name?.text = FridayPreference.getColorName()
-        switchTypeFace(FridayPreference.getFontType())
+        Log.i("friday", FridayPreference.getLang().toString())
+        if (FridayPreference.getLang() == cnType) {
+            switchCnTypeFace(FridayPreference.getCnFontType())
+        } else {
+            switchEnTypeFace(FridayPreference.getEnFontType())
+        }
         tv_color_name?.paint?.isFakeBoldText = true
         tv_is_friday?.paint?.isFakeBoldText = true
         tv_question?.paint?.isFakeBoldText = true
@@ -377,8 +380,8 @@ class FridayActivity : AppCompatActivity() {
             "PermanentMarker-Regular.ttf", "PlayfairDisplay-Regular.ttf", "Teko-Regular.ttf",
             "YanoneKaffeesatz-Regular.ttf")
 
-    private fun switchTypeFace(fontType: Int) {
-        FridayPreference.setFontType(fontType)
+    private fun switchCnTypeFace(fontType: Int) {
+        FridayPreference.setCnFontType(fontType)
         val typeface = when (fontType) {
             shuSongType -> Typeface.createFromAsset(assets, "FZSSJW.TTF")
             fangSongType -> Typeface.createFromAsset(assets, "FZFSJW.TTF")
@@ -391,17 +394,20 @@ class FridayActivity : AppCompatActivity() {
     }
 
     private fun switchEnTypeFace(fontName: String) {
-        val typeface = Typeface.createFromAsset(assets, fontName)
+        FridayPreference.setEnFontType(fontName)
+        val typeface = Typeface.createFromAsset(assets, if (fontName.isEmpty()) "AmaticSC-Regular.ttf" else fontName)
         tv_is_friday?.typeface = typeface
         tv_question?.typeface = typeface
     }
 
     private fun switchLanguage(langType: Int) {
+        Log.i("friday", "change lang = $langType")
+        FridayPreference.setLang(langType)
         tv_question?.text = if (langType == enType) "Is today Friday?" else "今天是周五吗？"
         if (today.get(DAY_OF_WEEK) == 6) {
             tv_is_friday.text = if (langType == enType) "YES!" else "是"
         } else {
-            tv_is_friday.text =  if (langType == enType) "NO" else "是"
+            tv_is_friday.text = if (langType == enType) "NO" else "是"
         }
         if (langType == enType) {
             sv_font_en_container.visibility = VISIBLE
@@ -409,6 +415,10 @@ class FridayActivity : AppCompatActivity() {
         } else {
             sv_font_en_container.visibility = GONE
             sv_font_cn_container.visibility = VISIBLE
+            setBg(tv_face_type_kai)
+            setBg(tv_face_type_hei)
+            setBg(tv_face_type_fang_song)
+            setBg(tv_face_type_shu_song)
         }
     }
 
