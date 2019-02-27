@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="info.free.duangjike.friday.AboutMeActivity"
+    tools:context="info.free.duangjike.friday.DonateActivity"
     android:background="@color/jikeWhite">
 
     <ImageView
@@ -27,7 +27,7 @@
         android:id="@+id/tv_donation_wechat"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="微信捐赠"
+        android:text="@string/donate_by_wechat"
         android:paddingStart="16dp"
         android:paddingEnd="16dp"
         android:paddingTop="8dp"
@@ -50,7 +50,7 @@
         android:paddingEnd="16dp"
         android:paddingTop="8dp"
         android:paddingBottom="8dp"
-        android:text="支付宝捐赠"
+        android:text="@string/donate_by_ali"
         android:background="@color/jikeBlue"
         android:gravity="center"
         app:layout_constraintTop_toBottomOf="@id/iv_about_me"
@@ -63,9 +63,9 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="长按二维码保存到相册"
+        android:text="@string/save_qrcode"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginBottom="8dp"/>
-</android.support.constraint.ConstraintLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

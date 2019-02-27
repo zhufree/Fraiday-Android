@@ -16,9 +16,7 @@ import android.graphics.Color
 import android.graphics.Typeface
 import android.net.Uri
 import android.os.Bundle
-import android.support.constraint.ConstraintLayout
-import android.support.constraint.ConstraintLayout.LayoutParams.MATCH_CONSTRAINT
-import android.support.v7.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatActivity
 import android.util.Log
 import android.view.*
 import android.view.Gravity.CENTER
@@ -27,6 +25,8 @@ import android.view.ViewGroup.LayoutParams.MATCH_PARENT
 import android.widget.TextView
 import android.widget.Toast
 import android.widget.Toast.LENGTH_SHORT
+import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.constraintlayout.widget.ConstraintLayout.LayoutParams.MATCH_CONSTRAINT
 import info.free.duangjike.R
 import info.free.duangjike.ThemeUtil
 import info.free.duangjike.Util
@@ -59,7 +59,6 @@ class FridayActivity : AppCompatActivity() {
 
     private val cnType = 0
     private val enType = 1
-    private val currentLang = FridayPreference.getLang()
 
     private var white: Int = -1
     private var blue: Int = -1
@@ -93,6 +92,7 @@ class FridayActivity : AppCompatActivity() {
         for (i in 0 until 11) {
             val tvFont = TextView(this)
             tvFont.text = i.toString()
+            tvFont.setTextColor(white)
             tvFont.gravity = CENTER
             val dp4 = Util.dp2px(4)
             tvFont.setPadding(dp4, dp4, dp4, dp4)
@@ -233,7 +233,7 @@ class FridayActivity : AppCompatActivity() {
             tv_color_name?.visibility = if (tv_color_name?.visibility == GONE) VISIBLE else GONE
         }
 
-        ib_donate?.setOnClickListener { startActivity(Intent(this, AboutMeActivity::class.java)) }
+        ib_donate?.setOnClickListener { startActivity(Intent(this, DonateActivity::class.java)) }
         ib_copyright?.setOnClickListener { startActivity(Intent(this, CopyrightActivity::class.java)) }
     }
 
@@ -264,13 +264,13 @@ class FridayActivity : AppCompatActivity() {
         val inputView = LayoutInflater.from(this).inflate(R.layout.layout_dialog_input, null)
 
         val titleString = when (type) {
-            bubbleType -> "气泡"
-            bgType -> "背景"
-            textType -> "文字"
-            else -> "气泡"
+            bubbleType -> getString(R.string.bubble)
+            bgType -> getString(R.string.background)
+            textType -> getString(R.string.text)
+            else -> getString(R.string.bubble)
         }
         val colorDialog = AlertDialog.Builder(this)
-                .setTitle("自定义${titleString}颜色")
+                .setTitle(getString(R.string.custom_some_color, titleString))
                 .setView(inputView)
                 .setPositiveButton("OK") { _, _ -> }
                 .setNegativeButton("Cancel") { dialog, _ -> dialog.dismiss() }
@@ -287,7 +287,7 @@ class FridayActivity : AppCompatActivity() {
                 }
                 colorDialog.dismiss()
             } else {
-                Toast.makeText(this, "请输入正确的颜色值", LENGTH_SHORT).show()
+                Toast.makeText(this, R.string.right_color, LENGTH_SHORT).show()
             }
         }
     }
@@ -447,10 +447,10 @@ class FridayActivity : AppCompatActivity() {
 
     private fun showPickColorDialog(type: Int) {
         val titleString = when (type) {
-            bubbleType -> "气泡"
-            bgType -> "背景"
-            textType -> "字体"
-            else -> "气泡"
+            bubbleType -> getString(R.string.bubble)
+            bgType -> getString(R.string.background)
+            textType -> getString(R.string.text)
+            else -> getString(R.string.bubble)
         }
         val inputView = LayoutInflater.from(this).inflate(R.layout.layout_dialog_pick_color, null)
 
@@ -469,7 +469,7 @@ class FridayActivity : AppCompatActivity() {
             }
         }
         val colorDialog = AlertDialog.Builder(this)
-                .setTitle("更多${titleString}颜色")
+                .setTitle(getString(R.string.more_some_color, titleString))
                 .setView(inputView)
                 .setPositiveButton("OK") { _, _ -> }
                 .setNegativeButton("Cancel") { _, _ -> }

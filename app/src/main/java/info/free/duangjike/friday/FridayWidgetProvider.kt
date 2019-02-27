@@ -24,7 +24,7 @@ class FridayWidgetProvider : AppWidgetProvider() {
             val remoteViews = FridayRemoteView(context.packageName)
             remoteViews.updateDayText()
             val intent = Intent(context, FridayActivity::class.java)
-            val pendingIntent = PendingIntent.getBroadcast(context, 5, intent, PendingIntent.FLAG_UPDATE_CURRENT)
+            val pendingIntent = PendingIntent.getActivity(context, 5, intent, PendingIntent.FLAG_UPDATE_CURRENT)
             remoteViews.setOnClickPendingIntent(R.id.ll_widget_container, pendingIntent)
             appWidgetManager?.updateAppWidget(appWidgetId, remoteViews)
         }

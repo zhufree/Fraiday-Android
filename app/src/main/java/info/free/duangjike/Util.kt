@@ -138,7 +138,7 @@ object Util {
      * @return 文件对象
      */
     fun saveBitmapFile(bitmap: Bitmap, filename: String): File {
-        val filePath = getAlbumStorageDir("DuangJike").path + "/$filename"
+        val filePath = getAlbumStorageDir("Friday").path + "/$filename"
         val file = File("$filePath.jpg")
         try {
             val outputStream = BufferedOutputStream(FileOutputStream(file))
@@ -196,12 +196,12 @@ object Util {
      */
     fun clearOldPicture() {
         val format = SimpleDateFormat("yyyy-MM-dd-hh:mm:ss")
-        getAlbumStorageDir("DuangJike").list { dir, name ->
+        getAlbumStorageDir("Friday").list { dir, name ->
             try {
                 if (name.contains("hwbk")) {
                     val fileToDel = File("${dir.path}${File.separator}$name")
                     fileToDel.delete()
-                } else {
+                } else if (!name.contains("donation")){
                     val pictureDate = format.parse(name)
                     Log.i("delete", pictureDate.toString())
                     if (Date().time - pictureDate.time > 3 * 24 * 3600 * 1000) {

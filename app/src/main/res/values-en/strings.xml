@@ -20,7 +20,7 @@
     <string name="full_screen">Full</string>
     <string name="cn">CN</string>
     <string name="en">EN</string>
-    <string name="set_wallpaper">Set As Aallpaper</string>
+    <string name="set_wallpaper">Set As Wallpaper</string>
     <string name="share">Share To</string>
     <string name="friday_group">Group Friday</string>
     <string name="save_picture">Save Picture</string>
@@ -31,4 +31,16 @@
     <string name="no">NO</string>
     <string name="more_color">More Color</string>
     <string name="custom_color">Custom Color</string>
+    <string name="bubble">Bubble</string>
+    <string name="background">Background</string>
+    <string name="text">Text</string>
+    <string name="more_some_color">More %1$s Color</string>
+    <string name="custom_some_color">Custom %1$s Color</string>
+    <string name="input_color_value">Enter a six-bit or eight-bit color value start with #</string>
+    <string name="right_color">Please enter valid color value.</string>
+    <string name="jump_notice">Go to target app, you can select qrcode in album to donate.</string>
+    <string name="uninstall_notice">You don\'t have %1$s installed on your phone so you can\'t donate, thanks for your support.</string>
+    <string name="donate_by_wechat">Donate By Wechat</string>
+    <string name="donate_by_ali">Donate By Alipay</string>
+    <string name="save_qrcode">Long click qrcode to save in album.</string>
 </resources>

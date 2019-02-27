@@ -27,6 +27,19 @@
     <string name="friday_group">周五圈子</string>
     <string name="save_picture">保存图片</string>
 
+    <string name="bubble">气泡</string>
+    <string name="background">背景</string>
+    <string name="text">文字</string>
+    <string name="more_some_color">更多%1$s颜色</string>
+    <string name="custom_some_color">自定义%1$s颜色</string>
+    <string name="input_color_value">输入六位或八位颜色值，以#开头</string>
+    <string name="right_color">请输入正确的颜色值</string>
+
+    <string name="donate_by_wechat">微信捐赠</string>
+    <string name="donate_by_ali">支付宝捐赠</string>
+    <string name="jump_notice">正在跳转到微信或支付宝扫一扫，请从相册选取赞赏二维码随意打赏</string>
+    <string name="uninstall_notice">检测到未安装%1$s无法打赏，感谢支持</string>
+    <string name="save_qrcode">长按二维码保存到相册</string>
 
     <string name="is_today_friday">今天是周五吗？</string>
     <string name="yes">是</string>

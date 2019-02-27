@@ -18,7 +18,9 @@ class FridayRemoteView(packageName: String) : RemoteViews(packageName, R.layout.
         setTextViewText(R.id.tv_widget_date, "${getWeekDayString(today.get(DAY_OF_WEEK))} " +
                 "${today.get(Calendar.YEAR)}.${today.get(Calendar.MONTH) + 1}." +
                 "${today.get(Calendar.DAY_OF_MONTH)}")
-        setTextViewText(R.id.tv_widget_is_friday, if (today.get(DAY_OF_WEEK) == 6) "是" else  "不是")
+        val yesString = if (FridayPreference.getLang() == 0) "是" else "YES!"
+        val noString = if (FridayPreference.getLang() == 0) "不是" else "NO"
+        setTextViewText(R.id.tv_widget_is_friday, if (today.get(DAY_OF_WEEK) == 6) yesString else noString)
     }
 
     private fun getWeekDayString(day: Int): String {

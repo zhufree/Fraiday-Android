@@ -23,7 +23,7 @@
                 <action android:name="android.intent.action.VIEW" />
             </intent-filter>
         </activity>
-        <activity android:name=".friday.AboutMeActivity" />
+        <activity android:name=".friday.DonateActivity" />
 
         <receiver android:name=".friday.FridayWidgetProvider">
             <meta-data

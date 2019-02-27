@@ -11,13 +11,13 @@ import android.content.pm.PackageManager
 import android.media.MediaScannerConnection
 import android.net.Uri
 import android.os.Handler
-import android.support.v7.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatActivity
 import android.widget.Toast.LENGTH_LONG
 import info.free.duangjike.R
 import info.free.duangjike.Util
 
 
-class AboutMeActivity : AppCompatActivity() {
+class DonateActivity : AppCompatActivity() {
     private var payType = 0; // 0 wechat 1 zhi
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -34,10 +34,11 @@ class AboutMeActivity : AppCompatActivity() {
         }
 
         iv_about_me?.setOnLongClickListener {
-            Util.saveBitmapFile((iv_about_me.drawable as BitmapDrawable).bitmap, "scp_donation")
-            MediaScannerConnection.scanFile(this, arrayOf(Util.getAlbumStorageDir("SCP").path + "/scp_donation.jpg"),
+            Util.saveBitmapFile((iv_about_me.drawable as BitmapDrawable).bitmap, "donation")
+            MediaScannerConnection.scanFile(this, arrayOf(Util.getAlbumStorageDir("Friday")
+                    .path + "/donation.jpg"),
                     null, null)
-            Toast.makeText(this, "正在跳转到微信或支付宝扫一扫，请从相册选取赞赏二维码随意打赏", LENGTH_LONG).show()
+            Toast.makeText(this, R.string.jump_notice, LENGTH_LONG).show()
             Handler().postDelayed({
                 if (payType == 0) startWechatScan(this) else openAlipayScan(this)
             }, 500)
@@ -54,7 +55,7 @@ class AboutMeActivity : AppCompatActivity() {
         if (isActivityAvailable(c, intent)) {
             c.startActivity(intent)
         } else {
-            Toast.makeText(c, "检测到未安装微信无法打赏，但还是感谢支持", Toast.LENGTH_SHORT).show()
+            Toast.makeText(c, getString(R.string.uninstall_notice, "微信"), Toast.LENGTH_SHORT).show()
         }
     }
 
@@ -65,7 +66,7 @@ class AboutMeActivity : AppCompatActivity() {
             if (isActivityAvailable(context, intent)) {
                 context.startActivity(intent)
             } else {
-                Toast.makeText(context, "检测到未安装支付宝无法打赏，但还是感谢支持", Toast.LENGTH_SHORT).show()
+                Toast.makeText(context, getString(R.string.uninstall_notice, "支付宝"), Toast.LENGTH_SHORT).show()
             }
         } catch (e: Exception) {
         }

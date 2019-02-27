@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -8,7 +8,7 @@
     android:fitsSystemWindows="true"
     tools:context="info.free.duangjike.friday.FridayActivity">
 
-    <android.support.constraint.ConstraintLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/cl_picture_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -81,10 +81,10 @@
             app:layout_constraintTop_toBottomOf="@id/tv_question"
             app:trv_color="@color/white"
             app:trv_direction="bottom" />
-    </android.support.constraint.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 
-    <android.support.constraint.ConstraintLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/cl_controller"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -247,7 +247,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
-                <android.support.constraint.ConstraintLayout
+                <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal">
@@ -314,7 +314,7 @@
                         app:layout_constraintDimensionRatio="1:1"
                         app:layout_constraintStart_toEndOf="@id/tv_face_type_kai"
                         app:layout_constraintTop_toTopOf="@id/tv_face_type_kai" />
-                </android.support.constraint.ConstraintLayout>
+                </androidx.constraintlayout.widget.ConstraintLayout>
             </ScrollView>
 
             <ScrollView
@@ -323,13 +323,13 @@
                 android:layout_height="wrap_content"
                 android:visibility="gone">
 
-                <android.support.constraint.ConstraintLayout
+                <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/cl_font_en"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal">
 
-                </android.support.constraint.ConstraintLayout>
+                </androidx.constraintlayout.widget.ConstraintLayout>
             </ScrollView>
 
         </LinearLayout>
@@ -498,7 +498,7 @@
             app:layout_constraintStart_toEndOf="@id/tv_more_text_color"
             app:layout_constraintTop_toTopOf="@id/tv_more_text_color" />
 
-    </android.support.constraint.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <ImageButton
         android:id="@+id/ib_copyright"
@@ -525,4 +525,4 @@
         android:src="@drawable/ic_monetization_on_white_24dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-</android.support.constraint.ConstraintLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
