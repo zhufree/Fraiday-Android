@@ -407,7 +407,7 @@ class FridayActivity : AppCompatActivity() {
         if (today.get(DAY_OF_WEEK) == 6) {
             tv_is_friday.text = if (langType == enType) "YES!" else "是"
         } else {
-            tv_is_friday.text = if (langType == enType) "NO" else "是"
+            tv_is_friday.text = if (langType == enType) "NO" else "不是"
         }
         if (langType == enType) {
             sv_font_en_container.visibility = VISIBLE

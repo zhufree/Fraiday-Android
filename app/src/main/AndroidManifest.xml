@@ -14,7 +14,7 @@
         android:roundIcon="@drawable/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.Light.NoActionBar">
-        <activity android:name=".friday.CopyrightActivity"></activity>
+        <activity android:name=".friday.CopyrightActivity"/>
         <activity android:name=".friday.FridayActivity">
             <intent-filter>
                 <category android:name="android.intent.category.LAUNCHER" />
