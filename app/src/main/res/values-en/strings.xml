@@ -43,4 +43,6 @@
     <string name="donate_by_wechat">Donate By Wechat</string>
     <string name="donate_by_ali">Donate By Alipay</string>
     <string name="save_qrcode">Long click qrcode to save in album.</string>
+    <string name="request_permission">The app need storage permission to read and save pictures.</string>
+
 </resources>

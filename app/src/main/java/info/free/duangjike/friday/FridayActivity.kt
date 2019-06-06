@@ -1,5 +1,7 @@
 package info.free.duangjike.friday
 
+import android.Manifest
+import android.app.Activity
 import android.app.AlertDialog
 import android.app.WallpaperManager
 import android.app.WallpaperManager.FLAG_LOCK
@@ -10,10 +12,7 @@ import android.content.Intent
 import android.content.Intent.ACTION_SEND
 import android.content.Intent.ACTION_VIEW
 import android.content.pm.PackageManager
-import android.graphics.Bitmap
-import android.graphics.Canvas
-import android.graphics.Color
-import android.graphics.Typeface
+import android.graphics.*
 import android.net.Uri
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
@@ -22,22 +21,26 @@ import android.view.*
 import android.view.Gravity.CENTER
 import android.view.View.*
 import android.view.ViewGroup.LayoutParams.MATCH_PARENT
+import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import android.widget.Toast.LENGTH_SHORT
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.constraintlayout.widget.ConstraintLayout.LayoutParams.MATCH_CONSTRAINT
+import com.nguyenhoanglam.imagepicker.model.Config
+import com.nguyenhoanglam.imagepicker.model.Image
+import com.nguyenhoanglam.imagepicker.ui.imagepicker.ImagePicker
 import info.free.duangjike.R
 import info.free.duangjike.ThemeUtil
 import info.free.duangjike.Util
 import info.free.duangjike.Util.clearOldPicture
-import io.reactivex.BackpressureStrategy
-import io.reactivex.Flowable
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.schedulers.Schedulers
+import info.free.duangjike.friday.Constants.REQUEST_PERMISSION
 import kotlinx.android.synthetic.main.activity_friday.*
 import kotlinx.android.synthetic.main.layout_dialog_input.view.*
 import kotlinx.android.synthetic.main.layout_dialog_pick_color.view.*
+import org.jetbrains.anko.*
+import pub.devrel.easypermissions.AfterPermissionGranted
+import pub.devrel.easypermissions.EasyPermissions
 import java.io.IOException
 import java.text.SimpleDateFormat
 import java.util.*
@@ -64,7 +67,7 @@ class FridayActivity : AppCompatActivity() {
     private var blue: Int = -1
     private var yellow: Int = -1
     private var black: Int = -1
-    private val today = Calendar.getInstance(Locale.CHINA)
+    private val today = getInstance(Locale.CHINA)
     private val fridayLink = "jike://page.jk/topic/565ac9dd4b715411006b5ecd"
     private val downJikeLink = "http://a.app.qq.com/o/simple.jsp?pkgname=com.ruguoapp.jike&ckey=CK1411402428437"
     private val jikePackageName = "com.ruguoapp.jike"
@@ -80,12 +83,35 @@ class FridayActivity : AppCompatActivity() {
         blue = resources.getColor(R.color.jikeBlue)
         yellow = resources.getColor(R.color.jikeYellow)
         black = resources.getColor(R.color.jikeBlack)
+        methodRequiresPermission()
         initData()
         setDate()
         refreshTheme()
         switchLanguage(FridayPreference.getLang())
         setEvent()
         clearOldPicture()
+    }
+
+    @AfterPermissionGranted(REQUEST_PERMISSION)
+    private fun methodRequiresPermission() {
+        val perms = arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+        if (EasyPermissions.hasPermissions(this, *perms)) {
+            // Already have permission, do the thing
+            // ...
+        } else {
+            // Do not have permissions, request them now
+            EasyPermissions.requestPermissions(
+                    this, getString(R.string.request_permission),
+                    REQUEST_PERMISSION, *perms
+            )
+        }
+    }
+
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+
+        // Forward results to EasyPermissions
+        EasyPermissions.onRequestPermissionsResult(requestCode, permissions, grantResults, this)
     }
 
     private fun initData() {
@@ -144,44 +170,40 @@ class FridayActivity : AppCompatActivity() {
         tv_set_wallpaper?.setOnClickListener { setBitmap(wallType) }
 
         tv_save?.setOnClickListener {
-            Flowable.create<Bitmap>({ emitter ->
+            doAsync {
                 val bitmap = Bitmap.createBitmap(cl_picture_container.width, cl_picture_container.height,
                         Bitmap.Config.RGB_565)
                 //使用Canvas，调用自定义view控件的onDraw方法，绘制图片
                 today.time = Date()
                 val canvas = Canvas(bitmap)
-                cl_picture_container?.draw(canvas)
-                emitter.onNext(bitmap)
-                emitter.onComplete()
-            }, BackpressureStrategy.BUFFER).subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe {
-                        val format = SimpleDateFormat("yyyy-MM-dd-hh:mm:ss")
-                        Util.saveBitmapFile(it, format.format(today.time))
-                        Toast.makeText(this, "Ojbk！", LENGTH_SHORT).show()
-                    }
+                fl_full_bg?.draw(canvas)
+                val format = SimpleDateFormat("yyyy-MM-dd-hh:mm:ss", Locale.CHINA)
+                Util.saveBitmapFile(bitmap, format.format(today.time))
+                uiThread {
+                    toast("Ojbk！")
+                }
+            }
+
         }
 
         tv_share?.setOnClickListener {
-            Flowable.create<Bitmap>({ emitter ->
-                today.time = Date()
+            doAsync {
                 val bitmap = Bitmap.createBitmap(cl_picture_container.width, cl_picture_container.height,
                         Bitmap.Config.RGB_565)
                 //使用Canvas，调用自定义view控件的onDraw方法，绘制图片
+                today.time = Date()
                 val canvas = Canvas(bitmap)
-                cl_picture_container?.draw(canvas)
-                emitter.onNext(bitmap)
-                emitter.onComplete()
-            }, BackpressureStrategy.BUFFER).subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe {
-                        val format = SimpleDateFormat("yyyy-MM-dd-hh:mm:ss")
-                        val shareIntent = Intent(ACTION_SEND)
-                        shareIntent.type = "image/*"
-                        val uri = Uri.fromFile(Util.saveBitmapFile(it, format.format(today.time)))
-                        shareIntent.putExtra(Intent.EXTRA_STREAM, uri)
-                        this.startActivity(Intent.createChooser(shareIntent, "分享到..."))
-                    }
+                fl_full_bg?.draw(canvas)
+                val format = SimpleDateFormat("yyyy-MM-dd-hh:mm:ss", Locale.CHINA)
+                val file = Util.saveBitmapFile(bitmap, format.format(today.time))
+                val uri = Uri.fromFile(file)
+                uiThread {
+                    val shareIntent = Intent(ACTION_SEND)
+                    shareIntent.type = "image/*"
+                    shareIntent.putExtra(Intent.EXTRA_STREAM, uri)
+                    it.startActivity(Intent.createChooser(shareIntent, "分享到..."))
+                }
+            }
         }
 
         tv_switch_en?.setOnClickListener { switchLanguage(enType) }
@@ -203,7 +225,7 @@ class FridayActivity : AppCompatActivity() {
         tv_more_bg_color.setOnClickListener { showPickColorDialog(bgType) }
         tv_more_text_color.setOnClickListener { showPickColorDialog(textType) }
 
-        cl_picture_container.setOnClickListener {
+        fl_full_bg.setOnClickListener {
             if (cl_controller?.visibility == GONE) {
                 cl_controller?.visibility = VISIBLE
                 ib_copyright?.visibility = VISIBLE
@@ -240,21 +262,18 @@ class FridayActivity : AppCompatActivity() {
     private fun setBitmap(type: Int) {
         try {
             val wpm = getSystemService(Context.WALLPAPER_SERVICE) as WallpaperManager
-            Flowable.create<Bitmap>({ emitter ->
+            doAsync {
                 val bitmap = Bitmap.createBitmap(cl_picture_container.width, cl_picture_container.height,
                         Bitmap.Config.RGB_565)
                 //使用Canvas，调用自定义view控件的onDraw方法，绘制图片
                 val canvas = Canvas(bitmap)
-                cl_picture_container?.draw(canvas)
-                emitter.onNext(bitmap)
-                emitter.onComplete()
-            }, BackpressureStrategy.BUFFER).subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe {
-                        wpm.setBitmap(it, null, true, if (type == wallType) FLAG_SYSTEM
-                        else FLAG_LOCK)
-                        Toast.makeText(this, "Ojbk！", LENGTH_SHORT).show()
-                    }
+                fl_full_bg?.draw(canvas)
+                wpm.setBitmap(bitmap, null, true, if (type == wallType) FLAG_SYSTEM
+                else FLAG_LOCK)
+                uiThread {
+                    toast("Ojbk！")
+                }
+            }
         } catch (e: IOException) {
             e.printStackTrace()
         }
@@ -472,8 +491,62 @@ class FridayActivity : AppCompatActivity() {
                 .setTitle(getString(R.string.more_some_color, titleString))
                 .setView(inputView)
                 .setPositiveButton("OK") { _, _ -> }
+                .setNeutralButton("选择图片") { _, _ ->
+                    openImagePicker()
+                }
                 .setNegativeButton("Cancel") { _, _ -> }
                 .create()
         colorDialog.show()
+    }
+
+    private var imageList: ArrayList<Image> = ArrayList()
+    private var pathList: ArrayList<String> = ArrayList()
+
+    fun openImagePicker() {
+        ImagePicker.with(this)                         //  Initialize ImagePicker with activity or fragment context
+                .setToolbarColor("#4A4E69")         //  Toolbar color
+                .setStatusBarColor("#4A4E69")       //  StatusBar color (works with SDK >= 21  )
+                .setToolbarTextColor("#FFFFFF")     //  Toolbar text color (Title and Done button)
+                .setToolbarIconColor("#FFFFFF")     //  Toolbar icon color (Back and Camera button)
+                .setProgressBarColor("#8C6070")     //  ProgressBar color
+                .setBackgroundColor("#e0f7fa")      //  Background color
+                .setCameraOnly(false)               //  Camera mode
+                .setMultipleMode(true)              //  Select multiple images or single image
+                .setFolderMode(true)                //  Folder mode
+                .setShowCamera(true)                //  Show camera button
+                .setFolderTitle("Pictures")           //  Folder title (works with FolderMode = true)
+//                    .setImageTitle("Galleries")         //  Image title (works with FolderMode = false)
+                .setDoneTitle("确定")               //  Done button title
+                .setLimitMessage("You have reached selection limit")    // Selection limit message
+                .setMaxSize(1)                     //  Max images can be selected
+                .setSavePath("cut_black")         //  Image capture folder name
+                .setSelectedImages(imageList)          //  Selected images
+                .setAlwaysShowDoneButton(true)      //  Set always show done button in multiple mode
+                .setRequestCode(Constants.PICK_PICTURE)                //  Set request code, default Config.RC_PICK_IMAGES
+                .setKeepScreenOn(true)              //  Keep screen on when selecting images
+                .start()
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (resultCode == Activity.RESULT_OK && data != null) {
+            imageList = data.getParcelableArrayListExtra(Config.EXTRA_IMAGES)
+            try {
+                var fitSize = false
+                alert("如需修改请重新选择图片", "是否拉伸图片填满屏幕？") {
+                    yesButton { iv_img_bg.scaleType = ImageView.ScaleType.FIT_XY }
+                    noButton { iv_img_bg.scaleType = ImageView.ScaleType.CENTER_CROP }
+                }.show()
+                if (imageList.size > 0) {
+                    val imgPath = imageList[0].path
+                    val bitmap = BitmapFactory.decodeFile(imageList[0].path)
+                    iv_img_bg.setImageBitmap(bitmap)
+                    cl_picture_container.setBackgroundColor(Color.TRANSPARENT)
+                }
+                imageList.clear()
+            } catch (e: Exception) {
+                Log.e("Exception", e.message, e)
+            }
+        }
     }
 }

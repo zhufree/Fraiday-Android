@@ -45,4 +45,5 @@
     <string name="jump_notice">正在跳转到微信或支付宝扫一扫，请从相册选取赞赏二维码随意打赏</string>
     <string name="uninstall_notice">检测到未安装%1$s无法打赏，感谢支持</string>
     <string name="save_qrcode">长按二维码保存到相册</string>
+    <string name="request_permission">本APP需要申请文件存取权限</string>
 </resources>
