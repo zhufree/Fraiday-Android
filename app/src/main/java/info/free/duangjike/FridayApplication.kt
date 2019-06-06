@@ -8,7 +8,7 @@ import android.content.Context
  * 自定义activity
  */
 
-class DuangApplication : Application() {
+class FridayApplication : Application() {
     override fun onCreate() {
         super.onCreate()
         context = applicationContext

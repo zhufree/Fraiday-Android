@@ -13,7 +13,7 @@ object ThemeUtil {
      * 根据手机的分辨率从 dp 的单位 转成为 px(像素)
      */
     fun dip2px(dpValue: Int): Float {
-        val context = DuangApplication.context
+        val context = FridayApplication.context
         if (scale == -1f) {
             scale = context.resources.displayMetrics.density
         }
@@ -38,5 +38,12 @@ object ThemeUtil {
         gd.cornerRadius = roundRadius
         gd.setStroke(strokeWidth, strokeColor)
         return gd
+    }
+
+    fun getScreenWidth(): Int {
+        return FridayApplication.context.getResources().getDisplayMetrics().widthPixels
+    }
+    fun getScreenHeight(): Int {
+        return FridayApplication.context.getResources().getDisplayMetrics().heightPixels
     }
 }

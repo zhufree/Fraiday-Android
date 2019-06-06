@@ -2,7 +2,7 @@ package info.free.duangjike.friday
 
 import android.content.Context
 import android.content.SharedPreferences
-import info.free.duangjike.DuangApplication
+import info.free.duangjike.FridayApplication
 
 /**
  * Created by zhufree on 2018/12/14.
@@ -66,7 +66,7 @@ object FridayPreference {
      * 工具方法
      */
     private fun getPrivateSharedPreference(name: String): SharedPreferences? {
-        return DuangApplication.context.getSharedPreferences(name, Context.MODE_PRIVATE)
+        return FridayApplication.context.getSharedPreferences(name, Context.MODE_PRIVATE)
     }
 
     private fun getBooleanValue(spName: String, key: String): Boolean {

@@ -27,6 +27,7 @@ import android.widget.Toast
 import android.widget.Toast.LENGTH_SHORT
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.constraintlayout.widget.ConstraintLayout.LayoutParams.MATCH_CONSTRAINT
+import androidx.core.content.FileProvider
 import com.nguyenhoanglam.imagepicker.model.Config
 import com.nguyenhoanglam.imagepicker.model.Image
 import com.nguyenhoanglam.imagepicker.ui.imagepicker.ImagePicker
@@ -75,7 +76,6 @@ class FridayActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        requestWindowFeature(Window.FEATURE_NO_TITLE)
         val flag = WindowManager.LayoutParams.FLAG_FULLSCREEN
         window.setFlags(flag, flag)
         setContentView(R.layout.activity_friday)
@@ -176,7 +176,7 @@ class FridayActivity : AppCompatActivity() {
                 //使用Canvas，调用自定义view控件的onDraw方法，绘制图片
                 today.time = Date()
                 val canvas = Canvas(bitmap)
-                fl_full_bg?.draw(canvas)
+                cl_picture_container?.draw(canvas)
                 val format = SimpleDateFormat("yyyy-MM-dd-hh:mm:ss", Locale.CHINA)
                 Util.saveBitmapFile(bitmap, format.format(today.time))
                 uiThread {
@@ -193,10 +193,10 @@ class FridayActivity : AppCompatActivity() {
                 //使用Canvas，调用自定义view控件的onDraw方法，绘制图片
                 today.time = Date()
                 val canvas = Canvas(bitmap)
-                fl_full_bg?.draw(canvas)
+                cl_picture_container?.draw(canvas)
                 val format = SimpleDateFormat("yyyy-MM-dd-hh:mm:ss", Locale.CHINA)
                 val file = Util.saveBitmapFile(bitmap, format.format(today.time))
-                val uri = Uri.fromFile(file)
+                val uri = FileProvider.getUriForFile(this@FridayActivity, applicationContext.packageName + ".provider", file)
                 uiThread {
                     val shareIntent = Intent(ACTION_SEND)
                     shareIntent.type = "image/*"
@@ -225,7 +225,7 @@ class FridayActivity : AppCompatActivity() {
         tv_more_bg_color.setOnClickListener { showPickColorDialog(bgType) }
         tv_more_text_color.setOnClickListener { showPickColorDialog(textType) }
 
-        fl_full_bg.setOnClickListener {
+        cl_picture_container.setOnClickListener {
             if (cl_controller?.visibility == GONE) {
                 cl_controller?.visibility = VISIBLE
                 ib_copyright?.visibility = VISIBLE
@@ -267,7 +267,7 @@ class FridayActivity : AppCompatActivity() {
                         Bitmap.Config.RGB_565)
                 //使用Canvas，调用自定义view控件的onDraw方法，绘制图片
                 val canvas = Canvas(bitmap)
-                fl_full_bg?.draw(canvas)
+                cl_picture_container?.draw(canvas)
                 wpm.setBitmap(bitmap, null, true, if (type == wallType) FLAG_SYSTEM
                 else FLAG_LOCK)
                 uiThread {

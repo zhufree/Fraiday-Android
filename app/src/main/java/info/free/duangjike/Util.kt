@@ -148,7 +148,7 @@ object Util {
         } catch (e: IOException) {
             e.printStackTrace()
         }
-        val contentResolver = DuangApplication.context.contentResolver
+        val contentResolver = FridayApplication.context.contentResolver
         val values = ContentValues(4)
         values.put(MediaStore.Images.Media.DATE_TAKEN, System.currentTimeMillis())
         values.put(MediaStore.Images.Media.MIME_TYPE, "image/png")
@@ -161,7 +161,7 @@ object Util {
 
         try {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                DuangApplication.context.grantUriPermission(DuangApplication.context.packageName,
+                FridayApplication.context.grantUriPermission(FridayApplication.context.packageName,
                         MediaStore.Images.Media.EXTERNAL_CONTENT_URI, FLAG_GRANT_WRITE_URI_PERMISSION)
             }
             url = contentResolver?.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values) //其实质是返回 Image.Meida.DATA中图片路径path的转变而成的uri
@@ -219,7 +219,7 @@ object Util {
     /**
      * 根据手机的分辨率从 dp 的单位 转成为 px(像素)
      */
-    fun dp2px(dpValue: Int, context: Context = DuangApplication.context): Int {
+    fun dp2px(dpValue: Int, context: Context = FridayApplication.context): Int {
         val scale = context.resources.displayMetrics.density
         return (dpValue * scale + 0.5f).toInt()
     }
