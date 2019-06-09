@@ -555,17 +555,19 @@ class FridayActivity : AppCompatActivity() {
         if (resultCode == Activity.RESULT_OK && data != null) {
             imageList = data.getParcelableArrayListExtra(Config.EXTRA_IMAGES)
             try {
-                var fitSize = false
-                alert("如需修改请重新选择图片", "Yes->图片填满屏幕,No->图片完全展示？") {
-                    yesButton { iv_img_bg.scaleType = ImageView.ScaleType.CENTER_CROP }
-                    noButton { iv_img_bg.scaleType = ImageView.ScaleType.CENTER_INSIDE }
+                alert("长按背景空白处可修改图片", "是否确定选择该图片？") {
+                    yesButton {
+                        if (imageList.size > 0) {
+                            val bitmap = BitmapFactory.decodeFile(imageList[0].path)
+                            iv_img_bg.setImageBitmap(bitmap)
+                        }
+                    }
+                    negativeButton("重新选择") {
+                        openImagePicker()
+                    }
+                    neutralPressed("不选了"){}
                 }.show()
-                if (imageList.size > 0) {
-                    val imgPath = imageList[0].path
-                    val bitmap = BitmapFactory.decodeFile(imageList[0].path)
-                    iv_img_bg.setImageBitmap(bitmap)
-                    cl_picture_container.setBackgroundColor(Color.TRANSPARENT)
-                }
+
             } catch (e: Exception) {
                 Log.e("Exception", e.message, e)
             }
