@@ -2,6 +2,7 @@ package info.free.duangjike.friday
 
 import android.content.Context
 import android.content.SharedPreferences
+import android.graphics.Color
 import info.free.duangjike.FridayApplication
 
 /**
@@ -42,10 +43,10 @@ object FridayPreference {
         return getIntValue(FRIDAY_PREF, BUBBLE_COLOR)
     }
     fun getBgColor(): Int {
-        return getIntValue(FRIDAY_PREF, BG_COLOR)
+        return getIntValue(FRIDAY_PREF, BG_COLOR, Color.parseColor("#FFE411"))
     }
     fun getTextColor(): Int {
-        return getIntValue(FRIDAY_PREF, TEXT_COLOR)
+        return getIntValue(FRIDAY_PREF, TEXT_COLOR, Color.parseColor("#404040"))
     }
     fun getLang(): Int {
         return getIntValue(FRIDAY_PREF, LANG)
@@ -80,6 +81,10 @@ object FridayPreference {
     private fun getIntValue(spName: String, key: String): Int {
         val sp = getPrivateSharedPreference(spName)
         return sp?.getInt(key, 0)?:0
+    }
+    private fun getIntValue(spName: String, key: String, default: Int): Int {
+        val sp = getPrivateSharedPreference(spName)
+        return sp?.getInt(key, default)?:default
     }
 
     private fun setIntValue(spName: String, key: String, value: Int) {

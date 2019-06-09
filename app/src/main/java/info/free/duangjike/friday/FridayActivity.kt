@@ -76,8 +76,7 @@ class FridayActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val flag = WindowManager.LayoutParams.FLAG_FULLSCREEN
-        window.setFlags(flag, flag)
+        window.addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
         setContentView(R.layout.activity_friday)
         white = resources.getColor(R.color.jikeWhite)
         blue = resources.getColor(R.color.jikeBlue)
@@ -240,6 +239,25 @@ class FridayActivity : AppCompatActivity() {
                 tv_color_name?.visibility = VISIBLE
                 tv_triangle?.visibility = VISIBLE
             }
+        }
+
+        cl_picture_container?.setOnLongClickListener {
+            val imgMenu = listOf("清除图片", "重新选择", "FIX_XY", "FIT_CENTER", "CENTER", "CENTER_CROP", "CENTER_INSIDE")
+            selector("修改图片", imgMenu) { _, i ->
+                when (i) {
+                    0 -> {
+                        imageList.clear()
+                        iv_img_bg?.setImageBitmap(null)
+                    }
+                    1 -> openImagePicker()
+                    2 -> iv_img_bg?.scaleType = ImageView.ScaleType.FIT_XY
+                    3 -> iv_img_bg?.scaleType = ImageView.ScaleType.FIT_CENTER
+                    4 -> iv_img_bg?.scaleType = ImageView.ScaleType.CENTER
+                    5 -> iv_img_bg?.scaleType = ImageView.ScaleType.CENTER_CROP
+                    6 -> iv_img_bg?.scaleType = ImageView.ScaleType.CENTER_INSIDE
+                }
+            }
+            true
         }
         tv_question.setOnClickListener {
             tv_question?.visibility = if (tv_question?.visibility == GONE) VISIBLE else GONE
@@ -487,22 +505,27 @@ class FridayActivity : AppCompatActivity() {
                 else -> changeBubbleColor(Color.parseColor(colorString))
             }
         }
-        val colorDialog = AlertDialog.Builder(this)
+        val colorDialogBuilder = AlertDialog.Builder(this)
                 .setTitle(getString(R.string.more_some_color, titleString))
                 .setView(inputView)
                 .setPositiveButton("OK") { _, _ -> }
-                .setNeutralButton("选择图片") { _, _ ->
-                    openImagePicker()
-                }
                 .setNegativeButton("Cancel") { _, _ -> }
+
+        if (type == bgType) {
+            colorDialogBuilder.setNeutralButton("选择图片") { _, _ ->
+                openImagePicker()
+            }
+        }
+        colorDialogBuilder
                 .create()
-        colorDialog.show()
+                .show()
     }
 
     private var imageList: ArrayList<Image> = ArrayList()
     private var pathList: ArrayList<String> = ArrayList()
 
     fun openImagePicker() {
+        imageList.clear()
         ImagePicker.with(this)                         //  Initialize ImagePicker with activity or fragment context
                 .setToolbarColor("#4A4E69")         //  Toolbar color
                 .setStatusBarColor("#4A4E69")       //  StatusBar color (works with SDK >= 21  )
@@ -533,9 +556,9 @@ class FridayActivity : AppCompatActivity() {
             imageList = data.getParcelableArrayListExtra(Config.EXTRA_IMAGES)
             try {
                 var fitSize = false
-                alert("如需修改请重新选择图片", "是否拉伸图片填满屏幕？") {
-                    yesButton { iv_img_bg.scaleType = ImageView.ScaleType.FIT_XY }
-                    noButton { iv_img_bg.scaleType = ImageView.ScaleType.CENTER_CROP }
+                alert("如需修改请重新选择图片", "Yes->图片填满屏幕,No->图片完全展示？") {
+                    yesButton { iv_img_bg.scaleType = ImageView.ScaleType.CENTER_CROP }
+                    noButton { iv_img_bg.scaleType = ImageView.ScaleType.CENTER_INSIDE }
                 }.show()
                 if (imageList.size > 0) {
                     val imgPath = imageList[0].path
@@ -543,7 +566,6 @@ class FridayActivity : AppCompatActivity() {
                     iv_img_bg.setImageBitmap(bitmap)
                     cl_picture_container.setBackgroundColor(Color.TRANSPARENT)
                 }
-                imageList.clear()
             } catch (e: Exception) {
                 Log.e("Exception", e.message, e)
             }

@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="info.free.duangjike.friday.DonateActivity">
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/ablToolbarWrapper"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:theme="@style/AppTheme.AppBarOverlay"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/donation_toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="@color/jikeBlue" />
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <ImageView
+        android:id="@+id/iv_about_me"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="64dp"
+        android:layout_marginTop="32dp"
+        android:layout_marginEnd="64dp"
+        android:layout_marginBottom="32dp"
+        android:contentDescription="@string/app_name"
+        android:src="@drawable/img_donation_wechat"
+        app:layout_constraintBottom_toTopOf="@id/tv_donation_wechat"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintVertical_chainStyle="spread_inside"
+        app:layout_constraintTop_toBottomOf="@id/ablToolbarWrapper"/>
+
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/tv_donation_wechat"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="60dp"
+        android:background="@color/jikeBlue"
+        android:textColor="@color/jikeWhite"
+        android:gravity="center"
+        android:paddingStart="16dp"
+        android:paddingTop="8dp"
+        android:paddingEnd="16dp"
+        android:paddingBottom="8dp"
+        android:text="@string/donate_by_wechat"
+        app:layout_constraintBottom_toTopOf="@id/tv_donation_notice"
+        app:layout_constraintEnd_toStartOf="@+id/tv_donation_alipay"
+        app:layout_constraintHorizontal_chainStyle="spread"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/iv_about_me" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/tv_donation_alipay"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@color/jikeBlue"
+        android:textColor="@color/jikeWhite"
+        android:gravity="center"
+        android:paddingStart="16dp"
+        android:paddingTop="8dp"
+        android:paddingEnd="16dp"
+        android:paddingBottom="8dp"
+        android:text="@string/donate_by_ali"
+        app:layout_constraintBottom_toBottomOf="@id/tv_donation_wechat"
+        app:layout_constraintEnd_toStartOf="@+id/tv_show_ad"
+        app:layout_constraintStart_toEndOf="@id/tv_donation_wechat"
+        app:layout_constraintTop_toTopOf="@id/tv_donation_wechat" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/tv_show_ad"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@color/jikeBlue"
+        android:textColor="@color/jikeWhite"
+        android:gravity="center"
+        android:paddingStart="16dp"
+        android:paddingTop="8dp"
+        android:paddingEnd="16dp"
+        android:paddingBottom="8dp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@id/tv_donation_wechat"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/tv_donation_alipay"
+        app:layout_constraintTop_toTopOf="@id/tv_donation_wechat" />
+
+    <TextView
+        android:id="@+id/tv_donation_notice"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="32dp"
+        android:text="@string/save_qrcode"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_donation_wechat"/>
+</androidx.constraintlayout.widget.ConstraintLayout>

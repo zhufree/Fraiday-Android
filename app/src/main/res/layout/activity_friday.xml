@@ -4,8 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@android:color/transparent"
-    android:fitsSystemWindows="true"
     tools:context="info.free.duangjike.friday.FridayActivity">
 
 
@@ -21,7 +19,7 @@
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/iv_img_bg"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"/>
 
         <TextView
             android:id="@+id/tv_is_friday"
@@ -511,7 +509,7 @@
         android:layout_width="30dp"
         android:layout_height="30dp"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="41dp"
         android:alpha="0.5"
         android:background="@color/jikeBlue"
         android:contentDescription="@string/app_name"
@@ -523,7 +521,7 @@
         android:id="@+id/ib_donate"
         android:layout_width="30dp"
         android:layout_height="30dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="41dp"
         android:layout_marginEnd="16dp"
         android:alpha="0.5"
         android:background="@color/jikeBlue"

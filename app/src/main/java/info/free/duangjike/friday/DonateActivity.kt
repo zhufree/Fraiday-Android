@@ -2,7 +2,7 @@ package info.free.duangjike.friday
 
 import android.graphics.drawable.BitmapDrawable
 import android.os.Bundle
-import kotlinx.android.synthetic.main.activity_about_me.*
+import kotlinx.android.synthetic.main.activity_donation.*
 import android.widget.Toast
 import android.content.ComponentName
 import android.content.Context
@@ -11,19 +11,21 @@ import android.content.pm.PackageManager
 import android.media.MediaScannerConnection
 import android.net.Uri
 import android.os.Handler
+import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
 import android.widget.Toast.LENGTH_LONG
 import info.free.duangjike.R
 import info.free.duangjike.Util
-
 
 class DonateActivity : AppCompatActivity() {
     private var payType = 0; // 0 wechat 1 zhi
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_about_me)
-
+        setContentView(R.layout.activity_donation)
+        setSupportActionBar(donation_toolbar)
+        donation_toolbar?.setNavigationIcon(R.drawable.ic_arrow_back_white_24dp)
+        donation_toolbar?.setNavigationOnClickListener { finish() }
         tv_donation_wechat?.setOnClickListener {
             payType = 0
             iv_about_me?.setImageResource(R.drawable.img_donation_wechat)
