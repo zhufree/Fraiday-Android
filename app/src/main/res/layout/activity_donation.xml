@@ -70,12 +70,12 @@
         android:paddingBottom="8dp"
         android:text="@string/donate_by_ali"
         app:layout_constraintBottom_toBottomOf="@id/tv_donation_wechat"
-        app:layout_constraintEnd_toStartOf="@+id/tv_show_ad"
+        app:layout_constraintEnd_toStartOf="@+id/tv_afdian"
         app:layout_constraintStart_toEndOf="@id/tv_donation_wechat"
         app:layout_constraintTop_toTopOf="@id/tv_donation_wechat" />
 
     <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/tv_show_ad"
+        android:id="@+id/tv_afdian"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@color/jikeBlue"
@@ -85,7 +85,7 @@
         android:paddingTop="8dp"
         android:paddingEnd="16dp"
         android:paddingBottom="8dp"
-        android:visibility="gone"
+        android:text="爱发电"
         app:layout_constraintBottom_toBottomOf="@id/tv_donation_wechat"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/tv_donation_alipay"

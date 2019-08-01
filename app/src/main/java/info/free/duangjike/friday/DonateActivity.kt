@@ -34,6 +34,13 @@ class DonateActivity : AppCompatActivity() {
             payType = 1
             iv_about_me?.setImageResource(R.drawable.img_donation_alipay)
         }
+        tv_afdian?.setOnClickListener {
+            val updateIntent = Intent()
+            updateIntent.action = "android.intent.action.VIEW"
+            val updateUrl = Uri.parse("https://afdian.net/@zhufree")
+            updateIntent.data = updateUrl
+            startActivity(updateIntent)
+        }
 
         iv_about_me?.setOnLongClickListener {
             Util.saveBitmapFile((iv_about_me.drawable as BitmapDrawable).bitmap, "donation")

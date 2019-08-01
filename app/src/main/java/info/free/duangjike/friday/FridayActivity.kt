@@ -15,6 +15,9 @@ import android.content.pm.PackageManager
 import android.graphics.*
 import android.net.Uri
 import android.os.Bundle
+import android.os.Environment.DIRECTORY_PICTURES
+import android.os.ParcelFileDescriptor
+import android.os.storage.StorageManager
 import androidx.appcompat.app.AppCompatActivity
 import android.util.Log
 import android.view.*
@@ -28,6 +31,7 @@ import android.widget.Toast.LENGTH_SHORT
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.constraintlayout.widget.ConstraintLayout.LayoutParams.MATCH_CONSTRAINT
 import androidx.core.content.FileProvider
+import androidx.documentfile.provider.DocumentFile
 import com.nguyenhoanglam.imagepicker.model.Config
 import com.nguyenhoanglam.imagepicker.model.Image
 import com.nguyenhoanglam.imagepicker.ui.imagepicker.ImagePicker
@@ -42,6 +46,8 @@ import kotlinx.android.synthetic.main.layout_dialog_pick_color.view.*
 import org.jetbrains.anko.*
 import pub.devrel.easypermissions.AfterPermissionGranted
 import pub.devrel.easypermissions.EasyPermissions
+import java.io.File
+import java.io.FileOutputStream
 import java.io.IOException
 import java.text.SimpleDateFormat
 import java.util.*
@@ -73,6 +79,12 @@ class FridayActivity : AppCompatActivity() {
     private val downJikeLink = "http://a.app.qq.com/o/simple.jsp?pkgname=com.ruguoapp.jike&ckey=CK1411402428437"
     private val jikePackageName = "com.ruguoapp.jike"
 
+    private val requestSavePic = 101
+    private val requestSharePic = 102
+    private val requestReadPic = 103
+
+    var currentBitmap: Bitmap? = null
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -88,7 +100,7 @@ class FridayActivity : AppCompatActivity() {
         refreshTheme()
         switchLanguage(FridayPreference.getLang())
         setEvent()
-        clearOldPicture()
+//        clearOldPicture()
     }
 
     @AfterPermissionGranted(REQUEST_PERMISSION)
@@ -170,37 +182,30 @@ class FridayActivity : AppCompatActivity() {
 
         tv_save?.setOnClickListener {
             doAsync {
-                val bitmap = Bitmap.createBitmap(cl_picture_container.width, cl_picture_container.height,
+                currentBitmap = Bitmap.createBitmap(cl_picture_container.width, cl_picture_container.height,
                         Bitmap.Config.RGB_565)
-                //使用Canvas，调用自定义view控件的onDraw方法，绘制图片
-                today.time = Date()
-                val canvas = Canvas(bitmap)
-                cl_picture_container?.draw(canvas)
-                val format = SimpleDateFormat("yyyy-MM-dd-hh:mm:ss", Locale.CHINA)
-                Util.saveBitmapFile(bitmap, format.format(today.time))
-                uiThread {
-                    toast("Ojbk！")
+                currentBitmap?.let {
+                    val canvas = Canvas(currentBitmap)
+                    cl_picture_container?.draw(canvas)
+                    getImageDir(requestSavePic)
                 }
+                //使用Canvas，调用自定义view控件的onDraw方法，绘制图片
             }
-
         }
 
         tv_share?.setOnClickListener {
             doAsync {
-                val bitmap = Bitmap.createBitmap(cl_picture_container.width, cl_picture_container.height,
+                currentBitmap = Bitmap.createBitmap(cl_picture_container.width, cl_picture_container.height,
                         Bitmap.Config.RGB_565)
                 //使用Canvas，调用自定义view控件的onDraw方法，绘制图片
-                today.time = Date()
-                val canvas = Canvas(bitmap)
-                cl_picture_container?.draw(canvas)
-                val format = SimpleDateFormat("yyyy-MM-dd-hh:mm:ss", Locale.CHINA)
-                val file = Util.saveBitmapFile(bitmap, format.format(today.time))
-                val uri = FileProvider.getUriForFile(this@FridayActivity, applicationContext.packageName + ".provider", file)
-                uiThread {
-                    val shareIntent = Intent(ACTION_SEND)
-                    shareIntent.type = "image/*"
-                    shareIntent.putExtra(Intent.EXTRA_STREAM, uri)
-                    it.startActivity(Intent.createChooser(shareIntent, "分享到..."))
+                currentBitmap?.let {
+                    val canvas = Canvas(currentBitmap)
+                    cl_picture_container?.draw(canvas)
+                    getImageDir(requestSharePic)
+                }
+
+                currentBitmap?.let {
+
                 }
             }
         }
@@ -276,6 +281,16 @@ class FridayActivity : AppCompatActivity() {
         ib_donate?.setOnClickListener { startActivity(Intent(this, DonateActivity::class.java)) }
         ib_copyright?.setOnClickListener { startActivity(Intent(this, CopyrightActivity::class.java)) }
     }
+
+
+    private fun getImageDir(code: Int) {
+        val sm = getSystemService(StorageManager::class.java)
+        val volume = sm?.primaryStorageVolume
+        volume?.createAccessIntent(DIRECTORY_PICTURES)?.also {
+            startActivityForResult(it, code)
+        }
+    }
+
 
     private fun setBitmap(type: Int) {
         try {
@@ -550,26 +565,64 @@ class FridayActivity : AppCompatActivity() {
                 .start()
     }
 
+    private fun saveFile(uri: Uri, next: (Uri) -> Unit) {
+        contentResolver?.takePersistableUriPermission(uri,
+                Intent.FLAG_GRANT_READ_URI_PERMISSION
+                        or Intent.FLAG_GRANT_WRITE_URI_PERMISSION)
+        val df = DocumentFile.fromTreeUri(this, uri)
+        val fridayPicDir = df?.findFile("Friday") // 获取文件夹
+        val format = SimpleDateFormat("yyyy-MM-dd-hh:mm:ss", Locale.CHINA)
+
+        fridayPicDir?.createFile("image/jpg", "${format.format(today.time)}.jpg")?.also {
+            doAsync {
+                val pfd = contentResolver.openFileDescriptor(it.uri, "w")
+                // 打开文件流，要注意是读取还是写入，r和w，使用w会重写覆盖原文件
+                val fileOutputStream = FileOutputStream(pfd.fileDescriptor)
+                currentBitmap?.compress(Bitmap.CompressFormat.JPEG, 100, fileOutputStream)
+                fileOutputStream.close()
+                next(it.uri)
+                uiThread {
+                    toast("Ojbk！")
+                }
+            }
+        }
+    }
+
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if (resultCode == Activity.RESULT_OK && data != null) {
-            imageList = data.getParcelableArrayListExtra(Config.EXTRA_IMAGES)
-            try {
-                alert("长按背景空白处可修改图片", "是否确定选择该图片？") {
-                    yesButton {
-                        if (imageList.size > 0) {
-                            val bitmap = BitmapFactory.decodeFile(imageList[0].path)
-                            iv_img_bg.setImageBitmap(bitmap)
-                        }
-                    }
-                    negativeButton("重新选择") {
-                        openImagePicker()
-                    }
-                    neutralPressed("不选了"){}
-                }.show()
+        today.time = Date()
+        data?.data?.let { uri ->
+            if (requestCode in arrayOf(requestSavePic, requestSharePic)) {
 
-            } catch (e: Exception) {
-                Log.e("Exception", e.message, e)
+            }
+            if (requestCode == requestSavePic && resultCode == Activity.RESULT_OK) {
+                saveFile(uri) {}
+            } else if (requestCode == requestSharePic && resultCode == Activity.RESULT_OK) {
+                saveFile(uri) {
+                    val shareIntent = Intent(ACTION_SEND)
+                    shareIntent.type = "image/*"
+                    shareIntent.putExtra(Intent.EXTRA_STREAM, it)
+                    startActivity(Intent.createChooser(shareIntent, "分享到..."))
+                }
+            } else if (resultCode == Activity.RESULT_OK) {
+                imageList = data.getParcelableArrayListExtra(Config.EXTRA_IMAGES)
+                try {
+                    alert("长按背景空白处可修改图片", "是否确定选择该图片？") {
+                        yesButton {
+                            if (imageList.size > 0) {
+                                val bitmap = BitmapFactory.decodeFile(imageList[0].path)
+                                iv_img_bg.setImageBitmap(bitmap)
+                            }
+                        }
+                        negativeButton("重新选择") {
+                            openImagePicker()
+                        }
+                        neutralPressed("不选了") {}
+                    }.show()
+
+                } catch (e: Exception) {
+                    Log.e("Exception", e.message, e)
+                }
             }
         }
     }

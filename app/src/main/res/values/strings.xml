@@ -8,10 +8,10 @@
     <string name="main_color">Main color: white(#F8F8F8)/blue(#01A9F4)/yellow(#FFE411)/black(#404040) was get from Jike website.</string>
     <string name="more_color_from">526 kinds of color in [more color] were got from a website named [中国色](the colors of China),you can visit it below.The color values at this website comes from a paper：《色谱》中科院科技情报编委会名词室.科学出版社,1957.</string>
     <string name="fonts">Fonts</string>
+    <string name="open_source">Open Source</string>
     <string name="cn_fonts">Chinese fonts：ShuSong、FangSong、KaiTi、HeiTi，are free fonts by FangZheng font library.</string>
     <string name="en_fonts">English fonts: AmaticSC/Courgette/IndieFlower/Kalam/Laila/Molle
     /NovaFlat/PermanentMarker/PlayfairDisplay/Teko/YanoneKaffeesatz(by order), are all free fonts by google fonts website.</string>
-
 
     <string name="text_color">Text Color</string>
     <string name="bg_color">Bg Color</string>
@@ -44,4 +44,7 @@
     <string name="donate_by_ali">Donate By Alipay</string>
     <string name="save_qrcode">Long click qrcode to save in album.</string>
     <string name="request_permission">The app need storage permission to read and save pictures.</string>
+    <string name="license_image_picker">com.github.nguyenhoanglam:ImagePicker\n
+        License  Copyright 2016 Nguyen Hoang Lam\n
+        Licensed under the Apache License, Version 2.0 (the License); you may not use this file except in compliance with the License. You may obtain a copy of the License at   http://www.apache.org/licenses/LICENSE-2.0    Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an AS IS BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.</string>
 </resources>
