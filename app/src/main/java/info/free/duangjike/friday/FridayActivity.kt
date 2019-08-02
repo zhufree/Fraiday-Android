@@ -1,6 +1,5 @@
 package info.free.duangjike.friday
 
-import android.Manifest
 import android.app.Activity
 import android.app.AlertDialog
 import android.app.WallpaperManager
@@ -16,7 +15,6 @@ import android.graphics.*
 import android.net.Uri
 import android.os.Bundle
 import android.os.Environment.DIRECTORY_PICTURES
-import android.os.ParcelFileDescriptor
 import android.os.storage.StorageManager
 import androidx.appcompat.app.AppCompatActivity
 import android.util.Log
@@ -30,7 +28,6 @@ import android.widget.Toast
 import android.widget.Toast.LENGTH_SHORT
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.constraintlayout.widget.ConstraintLayout.LayoutParams.MATCH_CONSTRAINT
-import androidx.core.content.FileProvider
 import androidx.documentfile.provider.DocumentFile
 import com.nguyenhoanglam.imagepicker.model.Config
 import com.nguyenhoanglam.imagepicker.model.Image
@@ -38,15 +35,10 @@ import com.nguyenhoanglam.imagepicker.ui.imagepicker.ImagePicker
 import info.free.duangjike.R
 import info.free.duangjike.ThemeUtil
 import info.free.duangjike.Util
-import info.free.duangjike.Util.clearOldPicture
-import info.free.duangjike.friday.Constants.REQUEST_PERMISSION
 import kotlinx.android.synthetic.main.activity_friday.*
 import kotlinx.android.synthetic.main.layout_dialog_input.view.*
 import kotlinx.android.synthetic.main.layout_dialog_pick_color.view.*
 import org.jetbrains.anko.*
-import pub.devrel.easypermissions.AfterPermissionGranted
-import pub.devrel.easypermissions.EasyPermissions
-import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
 import java.text.SimpleDateFormat
@@ -81,7 +73,7 @@ class FridayActivity : AppCompatActivity() {
 
     private val requestSavePic = 101
     private val requestSharePic = 102
-    private val requestReadPic = 103
+    private val requestDeletePic = 103
 
     var currentBitmap: Bitmap? = null
 
@@ -94,36 +86,14 @@ class FridayActivity : AppCompatActivity() {
         blue = resources.getColor(R.color.jikeBlue)
         yellow = resources.getColor(R.color.jikeYellow)
         black = resources.getColor(R.color.jikeBlack)
-        methodRequiresPermission()
         initData()
         setDate()
         refreshTheme()
         switchLanguage(FridayPreference.getLang())
         setEvent()
-//        clearOldPicture()
+        getImageDir(requestDeletePic)
     }
 
-    @AfterPermissionGranted(REQUEST_PERMISSION)
-    private fun methodRequiresPermission() {
-        val perms = arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE)
-        if (EasyPermissions.hasPermissions(this, *perms)) {
-            // Already have permission, do the thing
-            // ...
-        } else {
-            // Do not have permissions, request them now
-            EasyPermissions.requestPermissions(
-                    this, getString(R.string.request_permission),
-                    REQUEST_PERMISSION, *perms
-            )
-        }
-    }
-
-    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-
-        // Forward results to EasyPermissions
-        EasyPermissions.onRequestPermissionsResult(requestCode, permissions, grantResults, this)
-    }
 
     private fun initData() {
         for (i in 0 until 11) {
@@ -185,7 +155,7 @@ class FridayActivity : AppCompatActivity() {
                 currentBitmap = Bitmap.createBitmap(cl_picture_container.width, cl_picture_container.height,
                         Bitmap.Config.RGB_565)
                 currentBitmap?.let {
-                    val canvas = Canvas(currentBitmap)
+                    val canvas = Canvas(it)
                     cl_picture_container?.draw(canvas)
                     getImageDir(requestSavePic)
                 }
@@ -199,13 +169,9 @@ class FridayActivity : AppCompatActivity() {
                         Bitmap.Config.RGB_565)
                 //使用Canvas，调用自定义view控件的onDraw方法，绘制图片
                 currentBitmap?.let {
-                    val canvas = Canvas(currentBitmap)
+                    val canvas = Canvas(it)
                     cl_picture_container?.draw(canvas)
                     getImageDir(requestSharePic)
-                }
-
-                currentBitmap?.let {
-
                 }
             }
         }
@@ -359,20 +325,9 @@ class FridayActivity : AppCompatActivity() {
         tv_is_friday?.paint?.isFakeBoldText = true
         tv_question?.paint?.isFakeBoldText = true
 
-        setBg(tv_face_type_kai)
-        setBg(tv_face_type_hei)
-        setBg(tv_face_type_fang_song)
-        setBg(tv_face_type_shu_song)
-        setBg(tv_size_full)
-        setBg(tv_size_square)
-        setBg(tv_set_wallpaper)
-        setBg(tv_share)
-        setBg(tv_save)
-        setBg(tv_go_friday)
-        setBg(tv_switch_en)
-        setBg(tv_switch_cn)
-        setBg(ib_copyright)
-        setBg(ib_donate)
+        arrayOf(tv_face_type_kai, tv_face_type_hei, tv_face_type_fang_song, tv_face_type_shu_song,
+                tv_size_full, tv_size_square, tv_set_wallpaper, tv_share, tv_save,
+                tv_go_friday, tv_switch_en, tv_switch_cn, ib_copyright, ib_donate).forEach { setBg(it) }
 
         v_bubble_color_white.background = ThemeUtil.customShape(white, white, 0, ThemeUtil.dip2px(10))
         v_bubble_color_yellow.background = ThemeUtil.customShape(yellow, yellow, 0, ThemeUtil.dip2px(10))
@@ -399,7 +354,7 @@ class FridayActivity : AppCompatActivity() {
             tv_question?.background = ThemeUtil.customShape(color, color, 0,
                     tv_question.height.toFloat() / 2)
         }
-        tv_triangle.setColor(color)
+        tv_triangle?.setColor(color)
     }
 
     private fun changeBgColor(color: Int) {
@@ -424,7 +379,7 @@ class FridayActivity : AppCompatActivity() {
         tv_question?.setTextColor(color)
         tv_is_friday?.setTextColor(color)
         tv_today?.setTextColor(color)
-        tv_color_name.setTextColor(color)
+        tv_color_name?.setTextColor(color)
     }
 
     private val enFontList = arrayOf("AmaticSC-Regular.ttf", "Courgette-Regular.ttf", "IndieFlower.ttf",
@@ -457,16 +412,16 @@ class FridayActivity : AppCompatActivity() {
         FridayPreference.setLang(langType)
         tv_question?.text = if (langType == enType) "Is today Friday?" else "今天是周五吗？"
         if (today.get(DAY_OF_WEEK) == 6) {
-            tv_is_friday.text = if (langType == enType) "YES!" else "是"
+            tv_is_friday?.text = if (langType == enType) "YES!" else "是"
         } else {
-            tv_is_friday.text = if (langType == enType) "NO" else "不是"
+            tv_is_friday?.text = if (langType == enType) "NO" else "不是"
         }
         if (langType == enType) {
-            sv_font_en_container.visibility = VISIBLE
-            sv_font_cn_container.visibility = GONE
+            sv_font_en_container?.visibility = VISIBLE
+            sv_font_cn_container?.visibility = GONE
         } else {
-            sv_font_en_container.visibility = GONE
-            sv_font_cn_container.visibility = VISIBLE
+            sv_font_en_container?.visibility = GONE
+            sv_font_cn_container?.visibility = VISIBLE
             setBg(tv_face_type_kai)
             setBg(tv_face_type_hei)
             setBg(tv_face_type_fang_song)
@@ -478,9 +433,9 @@ class FridayActivity : AppCompatActivity() {
         tv_today?.text = "${getWeekDayString(today.get(DAY_OF_WEEK))} ${today.get(YEAR)}" +
                 ".${today.get(MONTH) + 1}.${today.get(DAY_OF_MONTH)}"
         if (today.get(DAY_OF_WEEK) == 6) {
-            tv_is_friday.text = "是"
+            tv_is_friday?.text = "是"
         } else {
-            tv_is_friday.text = "不是"
+            tv_is_friday?.text = "不是"
         }
     }
 
@@ -537,7 +492,6 @@ class FridayActivity : AppCompatActivity() {
     }
 
     private var imageList: ArrayList<Image> = ArrayList()
-    private var pathList: ArrayList<String> = ArrayList()
 
     fun openImagePicker() {
         imageList.clear()
@@ -571,18 +525,35 @@ class FridayActivity : AppCompatActivity() {
                         or Intent.FLAG_GRANT_WRITE_URI_PERMISSION)
         val df = DocumentFile.fromTreeUri(this, uri)
         val fridayPicDir = df?.findFile("Friday") // 获取文件夹
-        val format = SimpleDateFormat("yyyy-MM-dd-hh:mm:ss", Locale.CHINA)
+        val format = SimpleDateFormat("yyyy-MM-dd-hh_mm_ss", Locale.CHINA)
 
         fridayPicDir?.createFile("image/jpg", "${format.format(today.time)}.jpg")?.also {
             doAsync {
                 val pfd = contentResolver.openFileDescriptor(it.uri, "w")
                 // 打开文件流，要注意是读取还是写入，r和w，使用w会重写覆盖原文件
-                val fileOutputStream = FileOutputStream(pfd.fileDescriptor)
-                currentBitmap?.compress(Bitmap.CompressFormat.JPEG, 100, fileOutputStream)
-                fileOutputStream.close()
-                next(it.uri)
-                uiThread {
-                    toast("Ojbk！")
+                pfd?.let {p ->
+                    val fileOutputStream = FileOutputStream(p.fileDescriptor)
+                    currentBitmap?.compress(Bitmap.CompressFormat.JPEG, 100, fileOutputStream)
+                    fileOutputStream.close()
+                    next(it.uri)
+                    uiThread {
+                        toast("Ojbk！")
+                    }
+                }
+            }
+        }
+    }
+
+    private fun deleteFile(uri: Uri) {
+        contentResolver?.takePersistableUriPermission(uri,
+                Intent.FLAG_GRANT_READ_URI_PERMISSION
+                        or Intent.FLAG_GRANT_WRITE_URI_PERMISSION)
+        val df = DocumentFile.fromTreeUri(this, uri)
+        val fridayPicDir = df?.findFile("Friday") // 获取文件夹
+        fridayPicDir?.listFiles()?.forEach {
+            if (it.name?.contains("donation") == false) {
+                if (Date().time - it.lastModified() > 3 * 24 * 3600 * 1000) {
+                    it.delete()
                 }
             }
         }
@@ -592,9 +563,6 @@ class FridayActivity : AppCompatActivity() {
         super.onActivityResult(requestCode, resultCode, data)
         today.time = Date()
         data?.data?.let { uri ->
-            if (requestCode in arrayOf(requestSavePic, requestSharePic)) {
-
-            }
             if (requestCode == requestSavePic && resultCode == Activity.RESULT_OK) {
                 saveFile(uri) {}
             } else if (requestCode == requestSharePic && resultCode == Activity.RESULT_OK) {
@@ -604,7 +572,10 @@ class FridayActivity : AppCompatActivity() {
                     shareIntent.putExtra(Intent.EXTRA_STREAM, it)
                     startActivity(Intent.createChooser(shareIntent, "分享到..."))
                 }
-            } else if (resultCode == Activity.RESULT_OK) {
+            } else if (requestCode == requestDeletePic && resultCode == Activity.RESULT_OK) {
+                deleteFile(uri)
+            }
+            else if (resultCode == Activity.RESULT_OK) {
                 imageList = data.getParcelableArrayListExtra(Config.EXTRA_IMAGES)
                 try {
                     alert("长按背景空白处可修改图片", "是否确定选择该图片？") {

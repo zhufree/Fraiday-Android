@@ -191,30 +191,7 @@ object Util {
         return file
     }
 
-    /**
-     * 清除三天之前的图片
-     */
-    fun clearOldPicture() {
-        val format = SimpleDateFormat("yyyy-MM-dd-hh:mm:ss")
-        getAlbumStorageDir("Friday").list { dir, name ->
-            try {
-                if (name.contains("hwbk")) {
-                    val fileToDel = File("${dir.path}${File.separator}$name")
-                    fileToDel.delete()
-                } else if (!name.contains("donation")){
-                    val pictureDate = format.parse(name)
-                    Log.i("delete", pictureDate.toString())
-                    if (Date().time - pictureDate.time > 3 * 24 * 3600 * 1000) {
-                        Log.i("delete", "delete dir")
-                        val fileToDel = File("${dir.path}${File.separator}$name")
-                        fileToDel.delete()
-                    }
-                }
-            } finally {
-            }
-            true
-        }
-    }
+
 
     /**
      * 根据手机的分辨率从 dp 的单位 转成为 px(像素)
